@@ -49,8 +49,34 @@ print("Depends on MarkdownReports, gtools, readr, gdata, clipr. Some functions d
 # try(require("gtools"))
 # try(ggplot2::theme_set( theme_bw()), silent = TRUE)
 
+
+
+# Alisases ----------------
+TitleCase=tools::toTitleCase
+sort.natural = gtools::mixedsort
+p0 = paste0
+l=length
+
+ppp <- function(...) { paste(..., sep = '.') } # Paste by point
+pps <- function(...) { paste(..., sep = '/') } # Paste by (forward) slash
+ppu <- function(...) { paste(..., sep = '_') } # Paste by underscore
+ppd <- function(...) { paste(..., sep = '-') } # Paste by dash
+
+kpp <- function(...) { paste(..., sep = '.', collapse = '.') } # kollapse by point
+kppu <- function(...) { paste(..., sep = '_',  collapse = '_') } # kollapse by underscore
+kppd <- function(...) { paste(..., sep = '-', collapse = '-') } # kollapse by dash
+
+stry <- function(...) {try(..., silent = T)} # Silent try
+say <- function(...) {system("say Ready")} # Use system voice to notify (after a long task is done)
+sayy <- function(...) {system("say Ready to roll")} # Use system voice to notify (after a long task is done)
+
+
+grepv <- function (pattern, x, ignore.case = FALSE, perl = FALSE, value = FALSE, fixed = FALSE, useBytes = FALSE  # grep returning the value
+                   , invert = FALSE, ...) grep(pattern, x, ignore.case = ignore.case, perl = perl, fixed = fixed
+                                               , useBytes = useBytes, invert = invert, ..., value = TRUE)
+
 # detach_package <-
-unload <- function(pkg, character.only = FALSE) { # https://stackoverflow.com/questions/6979917/how-to-unload-a-package-without-restarting-r
+unload <- function(pkg, character.only = FALSE) { # Unload a package. Source: https://stackoverflow.com/questions/6979917/how-to-unload-a-package-without-restarting-r
   if(!character.only)
   {
     pkg <- deparse(substitute(pkg))
@@ -61,32 +87,6 @@ unload <- function(pkg, character.only = FALSE) { # https://stackoverflow.com/qu
     detach(search_item, unload = TRUE, character.only = TRUE)
   }
 }
-
-# Alisases ----------------
-stry <- function(...) {try(..., silent = T)} # Silent try
-
-say <- function(...) {system("say Ready")} # Use system voice to notify (after a long task is done)
-sayy <- function(...) {system("say Ready to roll")} # Use system voice to notify (after a long task is done)
-
-TitleCase=tools::toTitleCase
-sort.natural = gtools::mixedsort
-p0 = paste0
-ppp <- function(...) { paste(..., sep = '.')  } # Paste by point
-pps <- function(...) { paste(..., sep = '/')  } # Paste by (forward) slash
-ppu <- function(...) { paste(..., sep = '_')  } # Paste by underscore
-ppd <- function(...) { paste(..., sep = '-')  } # Paste by dash
-
-kpp <- function(...) { paste(..., sep = '.', collapse = '.')  } # kollapse by point
-kppu <- function(...) { paste(..., sep = '_',  collapse = '_')  } # kollapse by underscore
-kppd <- function(...) { paste(..., sep = '-', collapse = '-')  } # kollapse by dash
-
-l=length
-
-grepv <- function (pattern, x, ignore.case = FALSE, perl = FALSE, value = FALSE, fixed = FALSE, useBytes = FALSE  # grep returning the value
-                   , invert = FALSE, ...) grep(pattern, x, ignore.case = ignore.case, perl = perl, fixed = fixed
-                                               , useBytes = useBytes, invert = invert, ..., value = TRUE)
-
-
 ## File handling, export, import [read & write] -------------------------------------------------------------------------------------------------
 
 ### Clipboard interaction -------------------------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ clip2clip.vector <- function() { # Copy from clipboard (e.g. excel) to a R-forma
 }
 
 
-clip2clip.commaSepString <- function() {  # read a comma separated string (e.g. list of gene names) and properly format it for R.
+clip2clip.commaSepString <- function() { # read a comma separated string (e.g. list of gene names) and properly format it for R.
   x = unlist(strsplit(clipr::read_clip(), split = ','))
   clipr::write_clip(
     utils::capture.output(x)
@@ -112,7 +112,7 @@ clip2clip.commaSepString <- function() {  # read a comma separated string (e.g. 
 
 
 ### Reading files in -------------------------------------------------------------------------------------------------
-read.simple.vec <- function(...) {  # Read each line of a file to an element of a vector (read in new-line separated values, no header!).
+read.simple.vec <- function(...) { # Read each line of a file to an element of a vector (read in new-line separated values, no header!).
 	pfn = kollapse (...) # merge path and filename
 	read_in = as.vector(unlist(read.table( pfn , stringsAsFactors=FALSE, sep = "\n" )) )
 	iprint(length (read_in), "elements")
@@ -238,8 +238,8 @@ write.simple.vec <- function(input_vec, extension='vec', ManualName ="", o = FAL
 	if (o) { system(paste0("open ", FnP), wait = FALSE) }
 } # fun
 
-write.simple.xlsx <- function(named_list, ManualName ="", o = FALSE,  ..., TabColor = "darkgoldenrod1", Creator="Vertesy",
-                              HeaderCex=12, HeaderLineColor = "darkolivegreen3", HeaderCharStyle = c("bold", "italic", "underline")[1]  ) { # Write out a list of matrices/ data frames WITH ROW- AND COLUMN- NAMES to a file with as an Excel (.xslx) file. Your output filename will be either the variable's name. The output file will be located in "OutDir" specified by you at the beginning of the script, or under your current working directory. You can pass the PATH and VARIABLE separately (in order), they will be concatenated to the filename.
+write.simple.xlsx <- function(named_list, ManualName ="", o = FALSE,  ..., TabColor = "darkgoldenrod1", Creator="Vertesy",# Write out a list of matrices/ data frames WITH ROW- AND COLUMN- NAMES to a file with as an Excel (.xslx) file. Your output filename will be either the variable's name. The output file will be located in "OutDir" specified by you at the beginning of the script, or under your current working directory. You can pass the PATH and VARIABLE separately (in order), they will be concatenated to the filename.
+                              HeaderCex=12, HeaderLineColor = "darkolivegreen3", HeaderCharStyle = c("bold", "italic", "underline")[1]  ) {
   irequire(openxlsx)
   fname =  if (nchar (ManualName) < 2 ) { fname = substitute(named_list) }
   if (nchar(ManualName)) {FnP = kollapse(ManualName)} else  { FnP = ww.FnP_parser (fname, "xlsx") }
@@ -264,7 +264,7 @@ write.simple.append <- function(input_df, extension='tsv', ManualName ="", o = F
 
 ## Vector operations -------------------------------------------------------------------------------------------------
 
-sstrsplit <- function (string, pattern = "_", n = 2) {  stringr::str_split_fixed  (string, pattern = pattern, n = n) } # Alias for str_split_fixed in the stringr package
+sstrsplit <- function (string, pattern = "_", n = 2) { stringr::str_split_fixed  (string, pattern = pattern, n = n) } # Alias for str_split_fixed in the stringr package
 
 topN.dfCol <- function (df_Col =as.named.vector(df[ , 1, drop=FALSE]), n=5) 	{ head(sort(df_Col, decreasing = TRUE), n=n) } # Find the n highest values in a named vector
 bottomN.dfCol <- function (df_Col = as.named.vector(df[ , 1, drop=FALSE]), n=5) { head(sort(df_Col, decreasing = FALSE), n=n) } # Find the n lowest values in a named vector
@@ -325,12 +325,12 @@ rescale <- function(vec, from=0, upto=100) { # linear transformation to a given 
 flip_value2name <- function(named_vector, NumericNames =FALSE, silent = F) { # Flip the values and the names of a vector with names
   if (! is.null(names(named_vector))) {
     newvec = names(named_vector)
-    if (NumericNames) {  newvec = as.numeric(names(named_vector))     }
+    if (NumericNames) { newvec = as.numeric(names(named_vector))     }
     names(newvec) = named_vector
   } else {llprint("Vector without names!", head(named_vector))}
   if (!silent) {
-    if (any(duplicated(named_vector))) {iprint("New names contain duplicated elements", head(named_vector[which(duplicated(named_vector))]))  }
-    if (any(duplicated(newvec))) {iprint("Old names contained duplicated elements", head(newvec[which(duplicated(newvec))]))  }
+    if (any(duplicated(named_vector))) {iprint("New names contain duplicated elements", head(named_vector[which(duplicated(named_vector))])) }
+    if (any(duplicated(newvec))) {iprint("Old names contained duplicated elements", head(newvec[which(duplicated(newvec))])) }
   }
   return(newvec)
 }
@@ -338,7 +338,7 @@ flip_value2name <- function(named_vector, NumericNames =FALSE, silent = F) { # F
 value2name_flip = flip_value2name
 # sortbyitsnames <- function(vec_or_list) { # Sort a vector by the alphanumeric order of its names (instead of its values).
 # 	print("THIS FUCNTION MAKES MISTAKES WITH DUPLICATE NAMES")
-# 	if (is.vector(vec_or_list) & !is.list(vec_or_list)) {  vec[gtools::mixedsort(names(vec_or_list) )]
+# 	if (is.vector(vec_or_list) & !is.list(vec_or_list)) { vec[gtools::mixedsort(names(vec_or_list) )]
 # 	} else if (is.list(vec_or_list)) {	reorder.list(L = (vec_or_list), namesOrdered = gtools::mixedsort(names(vec_or_list))) }
 # 	}
 
@@ -362,14 +362,14 @@ any.duplicated <- function (vec, summarize=TRUE){ # How many entries are duplica
 
 which.duplicated <- function(vec, orig=F) { # orig =rownames(sc@expdata)
   DPL = vec[which(duplicated(vec))]; iprint(length(DPL), "Duplicated entries: ", DPL)
-  # for (i in DPL ) {    print(grepv(i,orig))  } #for
+  # for (i in DPL ) {   print(grepv(i,orig)) } #for
   return(DPL)
 }
 
 which.NA <- function(vec, orig=F) { # orig =rownames(sc@expdata)
   NANs = vec[which(is.na(vec))]; iprint(length(NANs), "NaN entries: ", NANs)
   NAs = vec[which(is.na(vec))]; iprint(length(NAs), "NA entries: ", NAs, "(only NA-s are returned)")
-  # for (i in DPL ) {    print(grepv(i,orig))  } #for
+  # for (i in DPL ) {   print(grepv(i,orig)) } #for
   return(NAs)
 }
 
@@ -385,7 +385,7 @@ which_names_grep <- function(named_Vec, pattern) { # Return the vector elements 
 }
 
 
-na.omit.mat <- function(mat, any = TRUE) {  # Omit rows with NA values from a matrix. Rows with any, or full of NA-s
+na.omit.mat <- function(mat, any = TRUE) { # Omit rows with NA values from a matrix. Rows with any, or full of NA-s
   mat=as.matrix(mat)
   stopifnot(length(dim(mat))==2)
   if (any) outMat = mat[ !is.na(rowSums(mat)), ]
@@ -498,7 +498,7 @@ colIQR <- function(x, na.rm=TRUE) apply(data.matrix(x), 2, IQR, na.rm=na.rm) # C
 rowquantile <- function(x, na.rm=TRUE, ...) apply(data.matrix(x), 1, quantile, ..., na.rm=na.rm) # Calculates the SEM of each row of a numeric matrix / data frame.
 colquantile <- function(x, na.rm=TRUE, ...) apply(data.matrix(x), 2, quantile, ..., na.rm=na.rm) # Calculates the SEM of each column of a numeric matrix / data frame.
 
-row.Zscore <- function(DF) t(scale(t(DF)))
+row.Zscore <- function(DF) t(scale(t(DF))) # Calculate Z-score over rows of data frame.
 
 # Auto correlation functions
 # rowACF <- function(x, na_pass=na.pass, ...) apply(data.matrix(x), 1, acf, ..., na.action = na_pass) # Calculates the SEM of each row of a numeric matrix / data frame.
@@ -506,8 +506,8 @@ row.Zscore <- function(DF) t(scale(t(DF)))
 rowACF <- function(x, na_pass=na.pass, plot=FALSE, ...) apply(x, 1, acf, na.action = na_pass,  plot=plot, ...) # RETURNS A LIST. Calculates the autocorrelation of each row of a numeric matrix / data frame.
 colACF <- function(x, na_pass=na.pass, plot=FALSE, ...) apply(x, 2, acf, na.action = na_pass,  plot=plot, ...) # RETURNS A LIST. Calculates the autocorrelation of each row of a numeric matrix / data frame.
 
-# Autocorrelation with exact lag
-acf.exactLag <- function(x, lag=1, na_pass=na.pass, plot=FALSE, ... ) {
+
+acf.exactLag <- function(x, lag=1, na_pass=na.pass, plot=FALSE, ... ) { # Autocorrelation with exact lag
   x=acf(x, na.action = na_pass,  plot=plot, ...)
   x[['acf']][(lag+1)]
 }
@@ -537,7 +537,7 @@ sort.mat <- function(df, colname_in_df = 1, decrease = FALSE, na_last = TRUE) { 
 	else {df[ order(df[, colname_in_df], decreasing = decrease, na.last = na_last), ]}
 }
 
-rowNameMatrix <- function(mat_w_dimnames) {  # Create a copy of your matrix, where every entry is replaced by the corresponding row name. Useful if you want to color by row name in a plot (where you have different number of NA-values in each row).
+rowNameMatrix <- function(mat_w_dimnames) { # Create a copy of your matrix, where every entry is replaced by the corresponding row name. Useful if you want to color by row name in a plot (where you have different number of NA-values in each row).
 	matrix(rep(rownames(mat_w_dimnames), ncol(mat_w_dimnames) ), nrow = nrow(mat_w_dimnames), ncol = ncol(mat_w_dimnames))
 }
 
@@ -549,7 +549,7 @@ colNameMatrix <- function(mat_w_dimnames) { # Create a copy of your matrix, wher
 colsplit <- function(df, f=colnames(df)) { # split a data frame by a factor corresponding to columns.
   ListOfDFs = NULL
   levelz = unique(f)
-  for (i in 1:length(levelz)) {    ListOfDFs[[i]] = df[ , which(f== levelz[i]) ]  }
+  for (i in 1:length(levelz)) {   ListOfDFs[[i]] = df[ , which(f== levelz[i]) ]  }
   names(ListOfDFs) = levelz
   return(ListOfDFs)
 }
@@ -558,7 +558,7 @@ splitByCol = colsplit
 rowsplit <- function(df, f=rownames(df)) { # split a data frame by a factor corresponding to columns.
   ListOfDFs = NULL
   levelz = unique(f)
-  for (i in 1:length(levelz)) {    ListOfDFs[[i]] = df[ which(f== levelz[i]), ]  }
+  for (i in 1:length(levelz)) {   ListOfDFs[[i]] = df[ which(f== levelz[i]), ]  }
   names(ListOfDFs) = levelz
   return(ListOfDFs)
 }
@@ -609,18 +609,18 @@ select.rows.and.columns <- function(df, RowIDs = NULL, ColIDs = NULL ) { # Subse
 
 getRows <- function(mat, rownamez, silent=FALSE, removeNAonly = FALSE, remove0only=FALSE ) { # Get the subset of rows with existing rownames, report how much it could not find.
   idx = intersect(rownamez, row.names(mat))
-  if (removeNAonly) {    idx = which_names(rowSums(!is.na(mat[ idx, ]), na.rm = TRUE)>0)  }
-  if (remove0only) {  idx = which_names(rowSums(mx!=0, na.rm = TRUE)>0)  }
-  if (!silent) { iprint(length(idx), "/", length(rownamez), "are found. Missing: ", length(setdiff(row.names(mat), rownamez))  )  }
+  if (removeNAonly) {   idx = which_names(rowSums(!is.na(mat[ idx, ]), na.rm = TRUE)>0) }
+  if (remove0only) { idx = which_names(rowSums(mx!=0, na.rm = TRUE)>0) }
+  if (!silent) { iprint(length(idx), "/", length(rownamez), "are found. Missing: ", length(setdiff(row.names(mat), rownamez))  ) }
   mat[ idx, ]
 }
 
 getCols <- function(mat, colnamez, silent=FALSE, removeNAonly = FALSE, remove0only=FALSE ) { # Get the subset of cols with existing colnames, report how much it could not find.
   idx = intersect(colnamez, colnames(mat))
   print(symdiff(colnamez, colnames(mat)))
-  if (removeNAonly) {    idx = which_names(colSums(!is.na(mat[ ,idx ]), na.rm = TRUE)>0)  }
-  if (remove0only) {  idx = which_names(colSums(mx!=0, na.rm = TRUE)>0)  }
-  if (!silent) { iprint(length(idx), "/", length(colnamez), "are found. Missing: ", length(setdiff(colnames(mat), colnamez))  )  }
+  if (removeNAonly) {   idx = which_names(colSums(!is.na(mat[ ,idx ]), na.rm = TRUE)>0) }
+  if (remove0only) { idx = which_names(colSums(mx!=0, na.rm = TRUE)>0) }
+  if (!silent) { iprint(length(idx), "/", length(colnamez), "are found. Missing: ", length(setdiff(colnames(mat), colnamez))  ) }
   mat[ ,idx ]
 }
 
@@ -649,8 +649,8 @@ combine.matrices.intersect <- function(matrix1, matrix2, k=2) { # combine matric
 
 # NEW
 merge_dfs_by_rn <- function(list_of_dfs) { # Merge any data frames by rownames. Required plyr package
-  for (i in names(list_of_dfs) ) {  colnames(list_of_dfs[[i]]) <- paste0(i,'.',colnames(list_of_dfs[[i]]))  } # make unique column names
-  for (i in names(list_of_dfs) ) {  list_of_dfs[[i]]$rn <- rownames(list_of_dfs[[i]]) } #for
+  for (i in names(list_of_dfs) ) { colnames(list_of_dfs[[i]]) <- paste0(i,'.',colnames(list_of_dfs[[i]])) } # make unique column names
+  for (i in names(list_of_dfs) ) { list_of_dfs[[i]]$rn <- rownames(list_of_dfs[[i]]) } #for
   COMBINED <- plyr::join_all(list_of_dfs, by = 'rn', type = 'full');   idim(COMBINED)
   rownames(COMBINED) = COMBINED$rn
   COMBINED$rn = NULL
@@ -858,7 +858,8 @@ as.listalike <- function(vec, list_wannabe) { # convert a vector to a list with 
 #' @export
 #' @examples list2fullDF.byNames()
 
-list2fullDF.byNames <- function(your.list=list( "set.1" = vec.fromNames(LETTERS[1:5], values = 1), "set.2" = vec.fromNames(LETTERS[3:9], values = 2)), byRow=TRUE, FILL=NA){
+list2fullDF.byNames <- function(your.list=list( "set.1" = vec.fromNames(LETTERS[1:5], values = 1)  # Convert a list to a full matrix. Rows = names(union.ls(your_list)) or all names of within list elements, columns = names(your_list).
+  , "set.2" = vec.fromNames(LETTERS[3:9], values = 2)), byRow=TRUE, FILL=NA){
   length.list = length(your.list)
   list.names = names(your.list)
   list.element.names = sort(unique(unlist(lapply(your.list, names))))
@@ -881,7 +882,8 @@ list2fullDF.byNames <- function(your.list=list( "set.1" = vec.fromNames(LETTERS[
 #' @export
 #' @examples list2fullDF.presence()
 
-list2fullDF.presence <- function(your.list=list("set.1"=LETTERS[1:5], "set.2"=LETTERS[3:9]), byRow=TRUE, FILL=0){
+list2fullDF.presence <- function(your.list=list("set.1"=LETTERS[1:5]  # Convert a list to a full matrix.  Designed for occurence counting, think tof table(). Rows = all ENTRIES of within your list, columns = names(your_list).
+  , "set.2"=LETTERS[3:9]), byRow=TRUE, FILL=0){
   length.list = length(your.list)
   list.names = names(your.list)
   list.elements = sort(Reduce(f = union, your.list))
@@ -957,7 +959,7 @@ clip.outliers <- function(valz, high=TRUE, probs = c(.01, .99), na.rm = TRUE, sh
 }
 
 
-ls2categvec <- function(your_list ) {  # Convert a list to a vector repeating list-element names, while vector names are the list elements
+ls2categvec <- function(your_list ) { # Convert a list to a vector repeating list-element names, while vector names are the list elements
   VEC = rep(names(your_list),unlapply(your_list, length))
   names(VEC) = unlist(your_list, use.names = TRUE)
   return(VEC)
@@ -990,7 +992,7 @@ gm_mean = geomean
 
 mean_of_log <- function(x, k=2, na.rm=TRUE){ # Calculates the mean of the log_k of a numeric vector (it excludes NA-s by default)
   negs = sum(x<0);  zeros = sum(x==0)
-  if (negs | zeros) { iprint("The input vector has", negs, "negative values and", zeros, "zeros." )  }
+  if (negs | zeros) { iprint("The input vector has", negs, "negative values and", zeros, "zeros." ) }
   mean(log(x, base = k), na.rm = na.rm) }
 
 movingAve <- function(x, oneSide = 5) { # Calculates the moving / rolling average of a numeric vector.
@@ -1048,7 +1050,7 @@ lookup <- function(needle, haystack, exact =TRUE, report = FALSE) { # Awesome pa
 
 
 ## Colors -----------------------------------------------------------------------------------------------------
-richColors <- function (n=3) {  gplots::rich.colors(n) } # Alias for rich.colors in gplots
+richColors <- function (n=3) { gplots::rich.colors(n) } # Alias for rich.colors in gplots
 
 
 Color_Check <- function(..., incrBottMarginBy=0, savefile = FALSE ) { # Display the colors encoded by the numbers / color-ID-s you pass on to this function
@@ -1097,7 +1099,7 @@ hist.XbyY <- function (dfw2col = NULL, toSplit=1:100, splitby= rnorm(100), break
 }#  ll=hist.XbyY(); wbarplot(unlapply(ll, length))
 
 
-flag.name_value <- function(toggle, Separator="_") { # returns the name and its value, if its not FALSE.
+flag.name_value <- function(toggle, Separator="_") { # Returns the name and its value, if its not FALSE.
   if (!isFALSE(toggle)) {
     output = paste(substitute(toggle), toggle, sep = Separator)
     if (length(output)>1) output = output[length(output)]  # fix for when input is a list element like p$'myparam'
@@ -1106,7 +1108,7 @@ flag.name_value <- function(toggle, Separator="_") { # returns the name and its 
 }
 # Xseed = p$'seed' = F; flag.name_value(Xseed); flag.name_value(p$'seed')
 
-flag.nameiftrue <- function(toggle, prefix=NULL, suffix=NULL, name.if.not="") {
+flag.nameiftrue <- function(toggle, prefix=NULL, suffix=NULL, name.if.not="") { # Returns the name and its value, if its TRUE.
   output = if (toggle) { paste0(prefix, (substitute(toggle)), suffix)
   } else {paste0(prefix, name.if.not, suffix)}
   if (length(output)>1) output = output[length(output)]  # fix for when input is a list element like p$'myparam'
@@ -1114,11 +1116,11 @@ flag.nameiftrue <- function(toggle, prefix=NULL, suffix=NULL, name.if.not="") {
 } # returns the name if its value is true
 nameiftrue = flag.nameiftrue # backward compatible
 
-flag.names_list <- function(par = p$'umap.min_dist') {
+flag.names_list <- function(par = p$'umap.min_dist') { # Returns the name and value of each element in a list of parameters.
   if (length(par)) paste(substitute(par), kppu(par) , sep= "_")[[3]]
 };  # param.list.flag(par = p$umap.n_neighbors)
 
-param.list.flag <- function(par = p$'umap.min_dist') {
+param.list.flag <- function(par = p$'umap.min_dist') { # Returns the name and value of each element in a list of parameters.
   paste(substitute(par), par, sep= "_")[[3]]
 };  # param.list.flag(par = p$umap.n_neighbors)
 
@@ -1289,7 +1291,7 @@ annot_col.create.pheatmap.df <- function(data, annot_df_per_column, annot_names=
     annot_column_i = df[, i]
     tt = table(annot_column_i); nz = names(tt)
     coll = if (is.numeric(annot_column_i)) { val2col(unique(annot_column_i));
-    } else {                         gplots::rich.colors(length(tt)) }
+    } else {                        gplots::rich.colors(length(tt)) }
     names(coll) = sort(nz)
     col_list[[i]] = coll
   } #for each column
@@ -1326,7 +1328,7 @@ annot_row.create.pheatmap.df <- function(data, annot_df_per_row, annot_names=NUL
     annot_column_i = df[, i]
     tt = table(annot_column_i); nz = names(tt)
     coll = if (is.numeric(annot_column_i)) { val2col(unique(annot_column_i));
-    } else {                         gplots::rich.colors(length(tt)) }
+    } else {                        gplots::rich.colors(length(tt)) }
     names(coll) = sort(nz)
     col_list[[i]] = coll
   } #for each column
@@ -1367,12 +1369,12 @@ numerate <- function(x=1, y=100, zeropadding = TRUE, pad_length = floor( log10( 
 
 printEveryN <- function( i, N=1000) { if((i %% N) == 0 ) iprint(i) } # Report at every e.g. 1000
 
-# zigzagger <- function (vec=1:9) {  new=vec; # mix entries so that they differ
+# zigzagger <- function (vec=1:9) { new=vec; # mix entries so that they differ
 #   mod = if (length(vec)%%2) 0 else 1
-#   for (i in 1:length(vec)) {    new[i] = if (i%%2) vec[i] else rev(vec)[i-mod] } ; return(new)
+#   for (i in 1:length(vec)) {   new[i] = if (i%%2) vec[i] else rev(vec)[i-mod] } ; return(new)
 # }
 
-zigzagger <- function (vec=1:9) {  # mix entries so that they differ
+zigzagger <- function (vec=1:9) { # mix entries so that they differ
   intermingle2vec(vec, rev(vec))[1:length(vec)]
 }
 
@@ -1445,8 +1447,8 @@ list.2.replicated.name.vec <- function(ListWithNames =Sections.ls.Final) { # Con
 
 idate <- function(Format = c("%Y.%m.%d_%H.%M", "%Y.%m.%d_%Hh")[2]) { format(Sys.time(), format =Format ) } # Parse current date, dot separated.
 
-view.head <- function(matrix, enn=10) {  matrix[1:min(NROW(matrix), enn), 1:min(NCOL(matrix), enn)] } # view the head of an object by console.
-view.head2 <- function(matrix, enn=10) {  View(head(matrix, n=min(NROW(matrix), NCOL(matrix), enn))) } # view the head of an object by View().
+view.head <- function(matrix, enn=10) { matrix[1:min(NROW(matrix), enn), 1:min(NCOL(matrix), enn)] } # view the head of an object by console.
+view.head2 <- function(matrix, enn=10) { View(head(matrix, n=min(NROW(matrix), NCOL(matrix), enn))) } # view the head of an object by View().
 
 
 iidentical.names <- function(v1, v2) { # Test if names of two objects for being exactly equal
@@ -1524,8 +1526,8 @@ name2id <- function(Names=c("Actn1","Actn","Actnsasasa2","Actn2") # Convert an n
 
   if (KeepNotFound) {ls_IDs[unlapply(ls_IDs, length)==0] <- NA}
   if (removeAmbigous) { ls_IDs = ls_IDs[(unlapply(ls_IDs,length)==1)]
-  } else if (KeepFirstHitOnly) { ls_IDs= lapply(ls_IDs, `[[`, 1)  } #if
-  if (unlist) { ls_IDs= unlist(ls_IDs)  } #if
+  } else if (KeepFirstHitOnly) { ls_IDs= lapply(ls_IDs, `[[`, 1) } #if
+  if (unlist) { ls_IDs= unlist(ls_IDs) } #if
   return(ls_IDs)
 }
 
@@ -1576,19 +1578,19 @@ legend.col <- function(col, lev){ # Legend color. # Source: https://aurelienmado
 
 # Work with multi dimensional lists --------------------------------
 
-copy.dimension.and.dimnames <- function(list.1D, obj.2D) {  # copy dimension and dimnames
+copy.dimension.and.dimnames <- function(list.1D, obj.2D) { # copy dimension and dimnames
   dim(list.1D) <- dim(obj.2D)
   dimnames(list.1D) <- dimnames(obj.2D)
   list.1D
 }
 
-mdlapply <- function(list_2D, ...) {  #  lapply for multidimensional arrays
+mdlapply <- function(list_2D, ...) { #  lapply for multidimensional arrays
   x = lapply(list_2D, ...)
   copy.dimension.and.dimnames(x,list_2D)
 }
 
 
-arr.of.lists.2.df <- function(two.dim.arr.of.lists) {  # simplify 2D-list-array to a DF
+arr.of.lists.2.df <- function(two.dim.arr.of.lists) { # simplify 2D-list-array to a DF
   list.1D = unlist(two.dim.arr.of.lists)
   dim(list.1D) <- dim(two.dim.arr.of.lists)
   dimnames(list.1D) <- dimnames(two.dim.arr.of.lists)
@@ -1596,7 +1598,7 @@ arr.of.lists.2.df <- function(two.dim.arr.of.lists) {  # simplify 2D-list-array 
 }
 
 
-mdlapply2df <- function(list_2D, ...) {  # multi dimensional lapply + arr.of.lists.2.df (simplify 2D-list-array to a DF)
+mdlapply2df <- function(list_2D, ...) { # multi dimensional lapply + arr.of.lists.2.df (simplify 2D-list-array to a DF)
   x = lapply(list_2D, ...)
   z = copy.dimension.and.dimnames(x,list_2D)
   arr.of.lists.2.df(z)
@@ -1666,7 +1668,7 @@ link_google <- function (vector_of_gene_symbols, prefix ="", suffix ="", writeOu
   links = paste0( google, prefix," ", vector_of_gene_symbols," ", suffix)
   if (writeOut) {
     bash_commands = paste0("open '", links, "'")
-    if (sleep>0) {  bash_commands = paste0(bash_commands, ' ; sleep ', sleep)  } # if wait
+    if (sleep>0) { bash_commands = paste0(bash_commands, ' ; sleep ', sleep) } # if wait
     write.simple.append("", ManualName = BashScriptLocation)
     write.simple.append(bash_commands, ManualName = BashScriptLocation)
   } else if (Open) { for (linkX in links) Sys.sleep(0.3+runif(1)); browseURL(linkX, encodeIfNeeded = T) }	else { return(links) }
@@ -1684,7 +1686,7 @@ link_bing <- function (vector_of_gene_symbols, prefix ="", suffix ="", writeOut 
   links = paste0( bing, prefix," ", vector_of_gene_symbols," ", suffix)
   if (writeOut) {
     bash_commands = paste0("open '", links, "'")
-    if (sleep>0) {  bash_commands = paste0(bash_commands, ' ; sleep ', sleep)  } # if wait
+    if (sleep>0) { bash_commands = paste0(bash_commands, ' ; sleep ', sleep) } # if wait
     write.simple.append("", ManualName = BashScriptLocation)
     write.simple.append(bash_commands, ManualName = BashScriptLocation)
   } else if (Open) { for (linkX in links) Sys.sleep(0.3+runif(1)); browseURL(linkX, encodeIfNeeded = T) }	else { return(links) }
