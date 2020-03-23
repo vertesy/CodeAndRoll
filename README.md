@@ -1,5 +1,52 @@
 # CodeAndRoll
-A collection of custom R functions. Works with MarkdownReports, but also as standalone. Many other repos/libraries of mine may have dependency on these functions. Source: own work + web (source referenced in description and/or source code). Intended for my personal use, shared because others may find (parts of it) useful.
+A collection of custom R functions. Works with MarkdownReports, but also as standalone. Many other repos/libraries of mine may have dependency on these functions. Source: own work + web (source referenced in description and/or source code). Intended for my personal use, shared because others may find (parts of it) useful. 
+
+
+## Install
+
+1.) [Download `CodeAndRoll.R`](https://github.com/vertesy/CodeAndRoll/blob/master/CodeAndRoll.R), save as local `.R` file, and `source()`: 
+
+2.) Source from the web:
+
+`source("https://raw.githubusercontent.com/vertesy/CodeAndRoll/master/CodeAndRoll.R")`
+
+### Troubleshooting
+
+*If you encounter a **bug**, or something doesn't work, please let me know by raising an issue on [CodeAndRoll](https://github.com/vertesy/CodeAndRoll/issues)*
+
+
+
+## Chapters 
+
+The script is roughly organised in the following sections / categories.
+
+1. ##### File handling, export, import [read & write]
+  1. ##### Clipboard interaction (OS X)
+  1. ##### Reading files in
+  1. ##### Writing files out
+  
+1. ##### Vector operations
+  1. ##### Vector filtering
+  
+3. ##### Matrix operations
+
+4. ##### List operations
+
+5. ##### Set operations
+
+6. ##### Math and stats
+
+7. ##### String operations
+
+8. ##### Plotting and Graphics
+
+9. ##### Read and write plotting functions READ
+
+10. ##### Generic
+
+11. ##### Plots
+
+1. ##### New additions
 
 
 
@@ -907,3 +954,7 @@ Backward compatibility is most often, but not always taken care of. See other fi
 1. #### `col2named.vec.tbl()`:
 
    Convert a 2-column table (data frame) into a named vector. 1st column will be used as names.
+   
+-----------
+[Get CodeAndRoll](https://github.com/vertesy/CodeAndRoll/blob/master/CodeAndRoll.R). Vertesy, 2020. 
+
