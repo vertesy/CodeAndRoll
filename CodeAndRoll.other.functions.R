@@ -10,6 +10,17 @@ hA4 =11.69
 # ------------------------------------------------------------------------
 # ------------------------------------------------------------------------
 
+my_render <- function(input, encoding) { # For Rmarkdown to keep the markdown file after rendering. Source: https://github.com/rstudio/rmarkdown/issues/107
+  rmarkdown::render(input, clean = FALSE, encoding = encoding)
+}
+
+
+# Then add this to your metadata:
+# output: html_document
+# knit: my_render
+
+
+
 # ------------------------------------------------------------------------
 
 #' whist.back2back
