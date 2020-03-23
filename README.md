@@ -1,9 +1,5 @@
 # CodeAndRoll
-A collection of custom R functions. Works with MarkdownReports, but also as standalone. Many other repos/libraries of mine may have dependency on these functions.
-
-
-
-
+A collection of custom R functions. Works with MarkdownReports, but also as standalone. Many other repos/libraries of mine may have dependency on these functions. Source: own work + web (source referenced in description and/or source code). Intended for my personal use, shared because others may find (parts of it) useful.
 
 
 
