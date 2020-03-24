@@ -1,6 +1,7 @@
 # CodeAndRoll
-A collection of custom R functions. Works with MarkdownReports, but also as standalone. Many other repos/libraries of mine may have dependency on these functions. Source: own work + web (source referenced in description and/or source code). Intended for my personal use, shared because others may find (parts of it) useful. 
+`CodeAndRoll` is a collection of custom R functions. Works with `MarkdownReports`, `SeuratUtils` but also as a standalone set of more than 200 productivity tools.. Many other repos/libraries of mine may have dependency on these functions. Source: own work + web (source referenced in description and/or source code). Intended for my personal use, shared because others may find (parts of it) useful. 
 
+`If you use these functions, please star the repo! Thanks :-)`
 
 ## Install
 
@@ -956,5 +957,7 @@ Backward compatibility is most often, but not always taken care of. See other fi
    Convert a 2-column table (data frame) into a named vector. 1st column will be used as names.
    
 -----------
+
 [Get CodeAndRoll](https://github.com/vertesy/CodeAndRoll/blob/master/CodeAndRoll.R). Vertesy, 2020. 
+`If you use these functions, please star the repo! Thanks :-)`
 
