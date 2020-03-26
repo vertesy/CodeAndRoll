@@ -8,11 +8,13 @@
 
 ## Install
 
-1.) [Download `CodeAndRoll.R`](https://github.com/vertesy/CodeAndRoll/blob/master/CodeAndRoll.R), save as local `.R` file, and `source()`: 
+1.) [Download `CodeAndRoll.R`](https://github.com/vertesy/CodeAndRoll/blob/master/CodeAndRoll.R), save as local `.R` file, and `source(~/path/to/CodeAndRoll.R)`: 
 
-2.) Source from the web:
+2.) Directly source from the web:
 
-`source("https://raw.githubusercontent.com/vertesy/CodeAndRoll/master/CodeAndRoll.R")`
+```R
+source("https://raw.githubusercontent.com/vertesy/CodeAndRoll/master/CodeAndRoll.R")
+```
 
 ### Troubleshooting
 
@@ -20,9 +22,17 @@
 
 
 
+## Usage
+
+After `source("~/path/to/CodeAndRoll.R")`  you can use any of the functions listed below. A part of the functions have a minimal example written in the `.R` scripts, just below each functions definition.
+
+
+
 ## Chapters 
 
-The script is roughly organised in the following sections / categories.
+The script is roughly organised in the following sections / categories:
+
+
 
 1. ##### File handling, export, import [read & write]
   1. ##### Clipboard interaction (OS X)
@@ -60,6 +70,8 @@ Note that this library is under continous development. Thus not all functions he
 Backward compatibility is most often, but not always taken care of. See other files in the repo if you are missing a function.
 
 
+
+### String operations
 
 1. #### `ppp()`:
 
@@ -107,7 +119,7 @@ Backward compatibility is most often, but not always taken care of. See other fi
 
 1. #### `unload()`:
 
-   Unload a package. Source: https://stackoverflow.com/questions/6979917/how-to-unload-a-package-without-restarting-r
+   Unload a package. Source [Stackoverflow]( https://stackoverflow.com/questions/6979917/how-to-unload-a-package-without-restarting-r).
 
 1. #### `clip2clip.vector()`:
 
@@ -136,6 +148,10 @@ Backward compatibility is most often, but not always taken care of. See other fi
 1. #### `FirstCol2RowNames()`:
 
    Set First Col to Row Names
+
+
+
+### File handling, export, import
 
 1. #### `read.simple.tsv()`:
 
@@ -403,7 +419,7 @@ Backward compatibility is most often, but not always taken care of. See other fi
 
 1. #### `sort.mat()`:
 
-   Sort a matrix. ALTERNATIVE: dd[with(dd, order(-z, b)), ]. Source: https://stackoverflow.com/questions/1296646/how-to-sort-a-dataframe-by-columns-in-r
+   Sort a matrix. ALTERNATIVE: dd[with(dd, order(-z, b)), ]. Source: [stackoverflow](https://stackoverflow.com/questions/1296646/how-to-sort-a-dataframe-by-columns-in-r). 
 
 1. #### `rowNameMatrix()`:
 
@@ -653,7 +669,7 @@ Backward compatibility is most often, but not always taken care of. See other fi
 
 1. #### `quantile_breaks()`:
 
-   Quantile breakpoints in any data vector http://slowkow.com/notes/heatmap-tutorial/
+   Quantile breakpoints in any data vector Source: [slowkow.com](http://slowkow.com/notes/heatmap-tutorial/).
 
 1. #### `vec.fromNames()`:
 
@@ -865,7 +881,7 @@ Backward compatibility is most often, but not always taken care of. See other fi
 
 1. #### `legend.col()`:
 
-   Legend color. # Source: https://aurelienmadouasse.wordpress.com/2012/01/13/legend-for-a-continuous-color-scale-in-r/
+   Legend color. # Source: [aurelienmadouasse.wordpress.com](https://aurelienmadouasse.wordpress.com/2012/01/13/legend-for-a-continuous-color-scale-in-r/). 
 
 1. #### `copy.dimension.and.dimnames()`:
 
@@ -917,7 +933,7 @@ Backward compatibility is most often, but not always taken care of. See other fi
 
 1. #### `sourcePartial()`:
 
-   Source parts of another script. Source: https://stackoverflow.com/questions/26245554/execute-a-set-of-lines-from-another-r-file
+   Source parts of another script. Source: [stackoverflow](https://stackoverflow.com/questions/26245554/execute-a-set-of-lines-from-another-r-file).
 
 1. #### `oo()`:
 
