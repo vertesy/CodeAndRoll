@@ -12,17 +12,17 @@
 suppressMessages(try(require(clipr), silent = T))
 try(require(ggplot2),silent = T)
 
-try(source("~/GitHub/Seurat.multicore/Seurat3.Multicore.Read.Write.R"), silent = T)
+# try(source("~/GitHub/Seurat.multicore/Seurat3.Multicore.Read.Write.R"), silent = T)
 try(source("~/GitHub/TheCorvinas/R/ggMarkdownreports.R"), silent = T)
 
 
 ### CHAPTERS:
 # -  File handling, export, import [read & write]
-# 	- Clipboard interaction (OS X)
-# 	- Reading files in
-# 	- Writing files out
+#   - Clipboard interaction (OS X)
+#   - Reading files in
+#   - Writing files out
 # -  Vector operations
-# 	- Vector filtering
+#   - Vector filtering
 # -  Matrix operations
 # -  List operations
 # -  Set operations
@@ -113,32 +113,32 @@ clip2clip.commaSepString <- function() { # read a comma separated string (e.g. l
 
 ### Reading files in -------------------------------------------------------------------------------------------------
 read.simple.vec <- function(...) { # Read each line of a file to an element of a vector (read in new-line separated values, no header!).
-	pfn = kollapse (...) # merge path and filename
-	read_in = as.vector(unlist(read.table( pfn , stringsAsFactors=FALSE, sep = "\n" )) )
-	iprint(length (read_in), "elements")
-	return(read_in);
+  pfn = kollapse (...) # merge path and filename
+  read_in = as.vector(unlist(read.table( pfn , stringsAsFactors=FALSE, sep = "\n" )) )
+  iprint(length (read_in), "elements")
+  return(read_in);
 }
 
 read.simple <- function(...) { # It is essentially read.table() with file/path parsing.
-	pfn = kollapse (...) # merge path and filename
-	read_in = read.table( pfn , stringsAsFactors=FALSE)
-	return(read_in)
+  pfn = kollapse (...) # merge path and filename
+  read_in = read.table( pfn , stringsAsFactors=FALSE)
+  return(read_in)
 }
 
 read.simple_char_list <- function(...) { # Read in a file.
-	pfn = kollapse (...) # merge path and filename
-	read_in = unlist(read.table( pfn , stringsAsFactors=FALSE ) )
-	iprint ("New variable head: ", what(read_in))
-	return(read_in)
+  pfn = kollapse (...) # merge path and filename
+  read_in = unlist(read.table( pfn , stringsAsFactors=FALSE ) )
+  iprint ("New variable head: ", what(read_in))
+  return(read_in)
 }
 
 read.simple.table <- function(..., colnames=TRUE, coltypes=NULL) { # Read in a file. default: header defines colnames, no rownames. For rownames give the col nr. with rownames, eg. 1 The header should start with a TAB / First column name should be empty.
-	pfn = kollapse (...) # merge path and filename
-	# read_in = read.table( pfn , stringsAsFactors=FALSE, sep="\t", header=colnames )
-	read_in = readr::read_tsv( pfn, col_names = colnames, col_types = coltypes )
-	iprint ("New variable dim: ", dim(read_in))
-	read_in = as.data.frame(gtools::na.replace(data.matrix(read_in), replace = 0))
-	return(read_in)
+  pfn = kollapse (...) # merge path and filename
+  # read_in = read.table( pfn , stringsAsFactors=FALSE, sep="\t", header=colnames )
+  read_in = readr::read_tsv( pfn, col_names = colnames, col_types = coltypes )
+  iprint ("New variable dim: ", dim(read_in))
+  read_in = as.data.frame(gtools::na.replace(data.matrix(read_in), replace = 0))
+  return(read_in)
 }
 
 FirstCol2RowNames <- function(Tibble, rownamecol=1, make_names=FALSE) { # Set First Col to Row Names
@@ -223,19 +223,19 @@ read.simple.xls <- function(pfn = kollapse(...), row_namePos=NULL, ..., header_ 
 ### Writing files out -------------------------------------------------------------------------------------------------
 
 write.simple <- function(input_df, extension='tsv', ManualName ="", o = FALSE, ...  ) { # Write out a matrix-like R-object to a file with as tab separated values (.tsv). Your output filename will be either the variable's name. The output file will be located in "OutDir" specified by you at the beginning of the script, or under your current working directory. You can pass the PATH and VARIABLE separately (in order), they will be concatenated to the filename.
-	fname = kollapse (...) ; if (nchar (fname) < 2 ) { fname = substitute(input_vec) }
-	if (nchar(ManualName)) {FnP = kollapse(ManualName)} else  { FnP = ww.FnP_parser (fname, extension) }
-	write.table (input_df, file = FnP, sep = "\t", row.names = FALSE, col.names = TRUE, quote=FALSE  )
-	if (o) { system(paste0("open ", FnP), wait = FALSE) }
-	iprint ("Length: ", length(input_df))
+  fname = kollapse (...) ; if (nchar (fname) < 2 ) { fname = substitute(input_vec) }
+  if (nchar(ManualName)) {FnP = kollapse(ManualName)} else  { FnP = ww.FnP_parser (fname, extension) }
+  write.table (input_df, file = FnP, sep = "\t", row.names = FALSE, col.names = TRUE, quote=FALSE  )
+  if (o) { system(paste0("open ", FnP), wait = FALSE) }
+  iprint ("Length: ", length(input_df))
 } # fun
 
 write.simple.vec <- function(input_vec, extension='vec', ManualName ="", o = FALSE, ... ) { # Write out a vector-like R-object to a file with as newline separated values (.vec). Your output filename will be either the variable's name. The output file will be located in "OutDir" specified by you at the beginning of the script, or under your current working directory. You can pass the PATH and VARIABLE separately (in order), they will be concatenated to the filename.
-	fname = kollapse (...) ; if (nchar (fname) < 2 ) { fname = substitute(input_vec) }
-	if (nchar(ManualName)) {FnP = kollapse(ManualName)} else  { FnP = ww.FnP_parser (fname, extension) }
-	write.table (input_vec, file = FnP, sep = "\t", row.names = FALSE, col.names = FALSE, quote=FALSE  )
-	iprint ("Length: ", length(input_vec))
-	if (o) { system(paste0("open ", FnP), wait = FALSE) }
+  fname = kollapse (...) ; if (nchar (fname) < 2 ) { fname = substitute(input_vec) }
+  if (nchar(ManualName)) {FnP = kollapse(ManualName)} else  { FnP = ww.FnP_parser (fname, extension) }
+  write.table (input_vec, file = FnP, sep = "\t", row.names = FALSE, col.names = FALSE, quote=FALSE  )
+  iprint ("Length: ", length(input_vec))
+  if (o) { system(paste0("open ", FnP), wait = FALSE) }
 } # fun
 
 write.simple.xlsx <- function(named_list, ManualName ="", o = FALSE,  ..., TabColor = "darkgoldenrod1", Creator="Vertesy",# Write out a list of matrices/ data frames WITH ROW- AND COLUMN- NAMES to a file with as an Excel (.xslx) file. Your output filename will be either the variable's name. The output file will be located in "OutDir" specified by you at the beginning of the script, or under your current working directory. You can pass the PATH and VARIABLE separately (in order), they will be concatenated to the filename.
@@ -254,10 +254,10 @@ write.simple.xlsx <- function(named_list, ManualName ="", o = FALSE,  ..., TabCo
 
 
 write.simple.append <- function(input_df, extension='tsv', ManualName ="", o = FALSE, ... ) { # Append an R-object WITHOUT ROWNAMES, to an existing .tsv file of the same number of columns. Your output filename will be either the variable's name. The output file will be located in "OutDir" specified by you at the beginning of the script, or under your current working directory. You can pass the PATH and VARIABLE separately (in order), they will be concatenated to the filename.
-	fname = kollapse (...) ; if (nchar (fname) < 2 ) { fname = substitute(input_df) }
-	if (nchar(ManualName)) { FnP = kollapse(ManualName)} else  { FnP = ww.FnP_parser (fname, extension) }
-	write.table (input_df, file = FnP, sep = "\t", row.names = FALSE, col.names = FALSE, quote=FALSE, append=TRUE  )
-	if (o) { system(paste0("open ", FnP), wait = FALSE) }
+  fname = kollapse (...) ; if (nchar (fname) < 2 ) { fname = substitute(input_df) }
+  if (nchar(ManualName)) { FnP = kollapse(ManualName)} else  { FnP = ww.FnP_parser (fname, extension) }
+  write.table (input_df, file = FnP, sep = "\t", row.names = FALSE, col.names = FALSE, quote=FALSE, append=TRUE  )
+  if (o) { system(paste0("open ", FnP), wait = FALSE) }
 } # fun
 
 
@@ -266,19 +266,19 @@ write.simple.append <- function(input_df, extension='tsv', ManualName ="", o = F
 
 sstrsplit <- function (string, pattern = "_", n = 2) { stringr::str_split_fixed  (string, pattern = pattern, n = n) } # Alias for str_split_fixed in the stringr package
 
-topN.dfCol <- function (df_Col =as.named.vector(df[ , 1, drop=FALSE]), n=5) 	{ head(sort(df_Col, decreasing = TRUE), n=n) } # Find the n highest values in a named vector
+topN.dfCol <- function (df_Col =as.named.vector(df[ , 1, drop=FALSE]), n=5)   { head(sort(df_Col, decreasing = TRUE), n=n) } # Find the n highest values in a named vector
 bottomN.dfCol <- function (df_Col = as.named.vector(df[ , 1, drop=FALSE]), n=5) { head(sort(df_Col, decreasing = FALSE), n=n) } # Find the n lowest values in a named vector
 
 
 as.named.vector <- function(df_col, WhichDimNames = 1) { # Convert a dataframe column or row into a vector, keeping the corresponding dimension name.
-	# use RowNames: WhichDimNames = 1 , 2: use ColNames
-	# !!! might require drop=FALSE in subsetting!!! eg: df_col[, 3, drop=FALSE]
-	# df_col[which(unlist(lapply(df_col, is.null)))] = "NULL" # replace NULLs - they would fall out of vectors - DOES not work yet
-	namez = dimnames(df_col)[[WhichDimNames]]
-	if (is.list(df_col) & !is.data.frame(df_col)) {namez = names(df_col)}
-	vecc = as.vector(unlist (df_col))
-	names (vecc)= namez
-	return (vecc)
+  # use RowNames: WhichDimNames = 1 , 2: use ColNames
+  # !!! might require drop=FALSE in subsetting!!! eg: df_col[, 3, drop=FALSE]
+  # df_col[which(unlist(lapply(df_col, is.null)))] = "NULL" # replace NULLs - they would fall out of vectors - DOES not work yet
+  namez = dimnames(df_col)[[WhichDimNames]]
+  if (is.list(df_col) & !is.data.frame(df_col)) {namez = names(df_col)}
+  vecc = as.vector(unlist (df_col))
+  names (vecc)= namez
+  return (vecc)
 }
 
 
@@ -310,16 +310,16 @@ as.numeric.wNames.old <- function(vec) { # Converts any vector into a numeric ve
 }
 
 as.character.wNames <- function(vec) { # Converts your input vector into a character vector, and puts the original character values into the names of the new vector, unless it already has names.
-	char_vec = as.character(vec)
-	if (!is.null(names(vec))) {names (char_vec) = names (vec)}
-	return(char_vec)
+  char_vec = as.character(vec)
+  if (!is.null(names(vec))) {names (char_vec) = names (vec)}
+  return(char_vec)
 }
 
 rescale <- function(vec, from=0, upto=100) { # linear transformation to a given range of values
-	vec = vec-min(vec, na.rm = TRUE)
-	vec = vec*((upto-from)/max(vec, na.rm = TRUE))
-	vec = vec+ from
-	return (vec)
+  vec = vec-min(vec, na.rm = TRUE)
+  vec = vec*((upto-from)/max(vec, na.rm = TRUE))
+  vec = vec+ from
+  return (vec)
 } # fun
 
 flip_value2name <- function(named_vector, NumericNames =FALSE, silent = F) { # Flip the values and the names of a vector with names
@@ -337,17 +337,17 @@ flip_value2name <- function(named_vector, NumericNames =FALSE, silent = F) { # F
 
 value2name_flip = flip_value2name
 # sortbyitsnames <- function(vec_or_list) { # Sort a vector by the alphanumeric order of its names (instead of its values).
-# 	print("THIS FUCNTION MAKES MISTAKES WITH DUPLICATE NAMES")
-# 	if (is.vector(vec_or_list) & !is.list(vec_or_list)) { vec[gtools::mixedsort(names(vec_or_list) )]
-# 	} else if (is.list(vec_or_list)) {	reorder.list(L = (vec_or_list), namesOrdered = gtools::mixedsort(names(vec_or_list))) }
-# 	}
+#   print("THIS FUCNTION MAKES MISTAKES WITH DUPLICATE NAMES")
+#   if (is.vector(vec_or_list) & !is.list(vec_or_list)) { vec[gtools::mixedsort(names(vec_or_list) )]
+#   } else if (is.list(vec_or_list)) {  reorder.list(L = (vec_or_list), namesOrdered = gtools::mixedsort(names(vec_or_list))) }
+#   }
 
 
 sortbyitsnames <- function(vec_or_list, decreasing=FALSE, ...) { # Sort a vector by the alphanumeric order of its names (instead of its values).
-	xx = names(vec_or_list)
-	names(xx) = 1:length(vec_or_list)
-	order = as.numeric(names(gtools::mixedsort(xx, decreasing = decreasing, ...)))
-	vec_or_list[order]
+  xx = names(vec_or_list)
+  names(xx) = 1:length(vec_or_list)
+  order = as.numeric(names(gtools::mixedsort(xx, decreasing = decreasing, ...)))
+  vec_or_list[order]
 }
 
 any.duplicated <- function (vec, summarize=TRUE){ # How many entries are duplicated
@@ -394,28 +394,28 @@ na.omit.mat <- function(mat, any = TRUE) { # Omit rows with NA values from a mat
 }
 
 inf.omit <- function(vec) { # Omit infinite values from a vector.
-	if (is.data.frame(vec)) {
-		if ( min(dim(vec)) > 1 ) { iprint(dim(vec), "dimensional array is converted to a vector.") }
-		vec = unlist(vec) }
-	clean = vec[is.finite(vec)]
-	# attributes(clean)$na.action <- NULL
-	return(clean)
+  if (is.data.frame(vec)) {
+    if ( min(dim(vec)) > 1 ) { iprint(dim(vec), "dimensional array is converted to a vector.") }
+    vec = unlist(vec) }
+  clean = vec[is.finite(vec)]
+  # attributes(clean)$na.action <- NULL
+  return(clean)
 }
 
 zero.omit <- function(vec) { # Omit zero values from a vector.
-	v2= vec[vec!=0]
-	iprint("range: ", range(v2))
-	if ( !is.null(names(vec)) ) {names(v2) = names(vec)[vec!=0]}
-	return(v2)
+  v2= vec[vec!=0]
+  iprint("range: ", range(v2))
+  if ( !is.null(names(vec)) ) {names(v2) = names(vec)[vec!=0]}
+  return(v2)
 }
 
 pc_TRUE <- function(logical_vector, percentify =TRUE, NumberAndPC=FALSE, NArm=TRUE) { # Percentage of true values in a logical vector, parsed as text (useful for reports.)
-	SUM = sum(logical_vector, na.rm = NArm)
-	LEN = length(logical_vector)
+  SUM = sum(logical_vector, na.rm = NArm)
+  LEN = length(logical_vector)
   out = SUM / LEN
-	if (percentify) {out = percentage_formatter (out) }
-	if (NumberAndPC) { out = paste0(out, " or " , SUM, " of ", LEN)	}
-	return(out)
+  if (percentify) {out = percentage_formatter (out) }
+  if (NumberAndPC) { out = paste0(out, " or " , SUM, " of ", LEN) }
+  return(out)
 }
 
 # deprecated :
@@ -427,37 +427,37 @@ NrAndPc <- function(logical_vec=idx_localised, total=TRUE, NArm=TRUE) { # Summar
 
 
 pc_in_total_of_match <- function(vec_or_table, category, NA_omit=TRUE) { # Percentage of a certain value within a vector or table.
-	if (is.table(vec_or_table)) { vec_or_table[category]/sum(vec_or_table, na.rm=NA_omit) }
-	else { # if (is.vector(vec_or_table))
-		if (NA_omit){
-			if (sum(is.na(vec_or_table))) { vec_or_table = na.omit(vec_or_table); iprint (sum(is.na(vec_or_table)), 'NA are omitted from the vec_or_table of:', length(vec_or_table))}
-			"Not wokring complelety : if NaN is stored as string, it does not detect it"
-			}
-		sum (vec_or_table==category) /  length (vec_or_table)
-	} # else: is vector
+  if (is.table(vec_or_table)) { vec_or_table[category]/sum(vec_or_table, na.rm=NA_omit) }
+  else { # if (is.vector(vec_or_table))
+    if (NA_omit){
+      if (sum(is.na(vec_or_table))) { vec_or_table = na.omit(vec_or_table); iprint (sum(is.na(vec_or_table)), 'NA are omitted from the vec_or_table of:', length(vec_or_table))}
+      "Not wokring complelety : if NaN is stored as string, it does not detect it"
+      }
+    sum (vec_or_table==category) /  length (vec_or_table)
+  } # else: is vector
 } # fun
 
 filter_survival_length <- function(length_new, length_old, prepend ="") { # Parse a sentence reporting the % of filter survival.
-	pc = percentage_formatter(length_new/length_old)
-	llprint (prepend, pc, " of ", length_old, " entries make through the filter")
+  pc = percentage_formatter(length_new/length_old)
+  llprint (prepend, pc, " of ", length_old, " entries make through the filter")
 }
 
 remove_outliers <- function(x, na.rm = TRUE, ..., probs = c(.05, .95)) { # Remove values that fall outside the trailing N % of the distribution.
   print("Deprecated. Use clip.outliers()")
   qnt <- quantile(x, probs=probs, na.rm = na.rm, ...)
-	# H <- 1.5 * IQR(x, na.rm = na.rm)
-	y <- x
-	# y[x < (qnt[1] - H)] <- NA ## Add IQR dependence
-	# y[x > (qnt[2] + H)] <- NA
-	y[x < qnt[1]] <- NA ## Add IQR dependence
-	y[x > qnt[2]] <- NA
-	y
+  # H <- 1.5 * IQR(x, na.rm = na.rm)
+  y <- x
+  # y[x < (qnt[1] - H)] <- NA ## Add IQR dependence
+  # y[x > (qnt[2] + H)] <- NA
+  y[x < qnt[1]] <- NA ## Add IQR dependence
+  y[x > qnt[2]] <- NA
+  y
 }
 
 simplify_categories <- function(category_vec, replaceit , to ) { # Replace every entry that is found in "replaceit", by a single value provided by "to"
-	matches  = which(category_vec %in% replaceit); iprint(length(matches), "instances of", replaceit, "are replaced by", to)
-	category_vec[matches] =  to
-	return(category_vec)
+  matches  = which(category_vec %in% replaceit); iprint(length(matches), "instances of", replaceit, "are replaced by", to)
+  category_vec[matches] =  to
+  return(category_vec)
 }
 
 ## Matrix operations -------------------------------------------------------------------------------------------------
@@ -533,17 +533,17 @@ rowDivide <- function(mat, vec) { # divide by row
 }
 
 sort.mat <- function(df, colname_in_df = 1, decrease = FALSE, na_last = TRUE) { # Sort a matrix. ALTERNATIVE: dd[with(dd, order(-z, b)), ]. Source: https://stackoverflow.com/questions/1296646/how-to-sort-a-dataframe-by-columns-in-r
-	if (length(colname_in_df)>1) { print ("cannot handle multi column sort") }
-	else {df[ order(df[, colname_in_df], decreasing = decrease, na.last = na_last), ]}
+  if (length(colname_in_df)>1) { print ("cannot handle multi column sort") }
+  else {df[ order(df[, colname_in_df], decreasing = decrease, na.last = na_last), ]}
 }
 
 rowNameMatrix <- function(mat_w_dimnames) { # Create a copy of your matrix, where every entry is replaced by the corresponding row name. Useful if you want to color by row name in a plot (where you have different number of NA-values in each row).
-	matrix(rep(rownames(mat_w_dimnames), ncol(mat_w_dimnames) ), nrow = nrow(mat_w_dimnames), ncol = ncol(mat_w_dimnames))
+  matrix(rep(rownames(mat_w_dimnames), ncol(mat_w_dimnames) ), nrow = nrow(mat_w_dimnames), ncol = ncol(mat_w_dimnames))
 }
 
 colNameMatrix <- function(mat_w_dimnames) { # Create a copy of your matrix, where every entry is replaced by the corresponding column name. Useful if you want to color by column name in a plot (where you have different number of NA-values in each column).
-	x = rep(colnames(mat_w_dimnames), nrow(mat_w_dimnames) )
-	t(matrix(x, nrow = ncol(mat_w_dimnames), ncol = nrow(mat_w_dimnames)))
+  x = rep(colnames(mat_w_dimnames), nrow(mat_w_dimnames) )
+  t(matrix(x, nrow = ncol(mat_w_dimnames), ncol = nrow(mat_w_dimnames)))
 }
 
 colsplit <- function(df, f=colnames(df)) { # split a data frame by a factor corresponding to columns.
@@ -747,60 +747,60 @@ union.ls <- function (ls, ...){ sort(unique(do.call(c,ls))) } # Intersect any nu
 unlapply <- function (...) { unlist(lapply(...)) } # lapply, then unlist
 
 list.wNames <- function(...){ # create a list with names from ALL variables you pass on to the function
-	lst = list(...)
-	names(lst) = as.character(match.call()[-1])
-	return(lst)
+  lst = list(...)
+  names(lst) = as.character(match.call()[-1])
+  return(lst)
 }
 
 as.list.df.by.row <- function(dtf, na.omit =TRUE, zero.omit =FALSE, omit.empty = FALSE) { # Split a dataframe into a list by its columns. omit.empty for the listelments; na.omit and zero.omit are applied on entries inside each list element.
-	outList = as.list(as.data.frame(t( dtf ) ) )
-	if (na.omit){		outList =  lapply(outList, na.omit.strip)	}
-	if (zero.omit){ 	outList =  lapply(outList, zero.omit) }
-	if (omit.empty) { 	outList = outList[(lapply(outList, length))>0] }
-	print(str(outList, vec.len = 2))
-	return(outList)
+  outList = as.list(as.data.frame(t( dtf ) ) )
+  if (na.omit){   outList =  lapply(outList, na.omit.strip) }
+  if (zero.omit){   outList =  lapply(outList, zero.omit) }
+  if (omit.empty) {   outList = outList[(lapply(outList, length))>0] }
+  print(str(outList, vec.len = 2))
+  return(outList)
 }
 
 as.list.df.by.col <- function(dtf, na.omit =TRUE, zero.omit =FALSE, omit.empty = FALSE) { # oSplit a dataframe into a list by its rows. omit.empty for the listelments; na.omit and zero.omit are applied on entries inside each list element.
-	outList = as.list(dtf )
-	if (na.omit){		outList =  lapply(outList, na.omit.strip)	}
-	if (zero.omit){		outList =  lapply(outList, zero.omit)	}
-	if (omit.empty) { 	outList = outList[(lapply(outList, length))>0] }
-	print(str(outList, vec.len = 2))
-	return(outList)
+  outList = as.list(dtf )
+  if (na.omit){   outList =  lapply(outList, na.omit.strip) }
+  if (zero.omit){   outList =  lapply(outList, zero.omit) }
+  if (omit.empty) {   outList = outList[(lapply(outList, length))>0] }
+  print(str(outList, vec.len = 2))
+  return(outList)
 }
 
 reorder.list <- function(L, namesOrdered=mixedsort(names(L))) { # reorder elements of lists in your custom order of names / indices.
-	Lout = list(NA)
-	for (x in 1:length(namesOrdered)) { Lout[[x]] = L[[namesOrdered[x] ]]  }
-	if(length(names(L))) { names(Lout) = namesOrdered }
-	return (Lout)
+  Lout = list(NA)
+  for (x in 1:length(namesOrdered)) { Lout[[x]] = L[[namesOrdered[x] ]]  }
+  if(length(names(L))) { names(Lout) = namesOrdered }
+  return (Lout)
 }
 
 range.list <- function(L, namesOrdered) { # range of values in whole list
-	return(range(unlist(L), na.rm=TRUE))
+  return(range(unlist(L), na.rm=TRUE))
 }
 
 intermingle2lists <- function(L1, L2) { # Combine 2 lists (of the same length) so that form every odd and every even element of a unified list. Useful for side-by-side comparisons, e.g. in wstripchart_list().
-	stopifnot(length(L1) == length(L2) )
-	Lout = list(NA)
-	for (x in 1:(2*length(L1)) ) {
-		if (x  %% 2) {	Lout[[x]] = L1[[((x+1)/2)]]; names(Lout)[x] = names(L1)[((x+1)/2)]
-		} else { 		Lout[[x]] = L2[[(x)/2]]; names(Lout)[x] = names(L2)[(x)/2]			}
-	} # for
-	return(Lout)
+  stopifnot(length(L1) == length(L2) )
+  Lout = list(NA)
+  for (x in 1:(2*length(L1)) ) {
+    if (x  %% 2) {  Lout[[x]] = L1[[((x+1)/2)]]; names(Lout)[x] = names(L1)[((x+1)/2)]
+    } else {    Lout[[x]] = L2[[(x)/2]]; names(Lout)[x] = names(L2)[(x)/2]      }
+  } # for
+  return(Lout)
 }
 
 as.listalike <- function(vec, list_wannabe) { # convert a vector to a list with certain dimensions, taken from the list it wanna resemble
-	stopifnot(length(vec) == length(unlist(list_wannabe)))
-	list_return = list_wannabe
-	past =0
-	for (v in 1:length (list_wannabe)) {
-		lv = length (list_wannabe[[v]])
-		list_return[[v]] = vec[(past+1):(past+lv)]
-		past = past+lv
-	} # for
-	return(list_return)
+  stopifnot(length(vec) == length(unlist(list_wannabe)))
+  list_return = list_wannabe
+  past =0
+  for (v in 1:length (list_wannabe)) {
+    lv = length (list_wannabe[[v]])
+    list_return[[v]] = vec[(past+1):(past+lv)]
+    past = past+lv
+  } # for
+  return(list_return)
 }
 
 
@@ -933,8 +933,8 @@ intermingle.cbind <- function(df1, df2) { # Combine 2 data frames (of the same l
   }
   NewMatr = matrix.fromNames(rowname_vec = CommonGenes, colname_vec = NewColNames)
   for (x in 1:(2*length(df1)) ) {
-    if (x  %% 2) {	NewMatr[ , x ] = df1[ , (x+1)/2 ]
-    } else { 		    NewMatr[ , x ] = df2[ , (x)/2 ]      }
+    if (x  %% 2) {  NewMatr[ , x ] = df1[ , (x+1)/2 ]
+    } else {        NewMatr[ , x ] = df2[ , (x)/2 ]      }
   } # for
   print(idim(NewMatr))
   return(NewMatr)
@@ -999,53 +999,53 @@ movingAve <- function(x, oneSide = 5) { # Calculates the moving / rolling averag
   y = NULL
   for (i in oneSide:length(x)) {
     y[i] = mean( x[ (i-oneSide):(i+oneSide) ] )
-  }; 	return (y)
+  };  return (y)
 }
 
 
 movingAve2 <- function(x,n=5){filter(x,rep(1/n,n), sides=2)}
 
 movingSEM <- function(x, oneSide = 5) { # Calculates the moving / rolling standard error of the mean (SEM) on a numeric vector.
-	y = NULL
-	for (i in oneSide:length(x)) {
-		y[i] = sem( x[ (i-oneSide):(i+oneSide) ] )
-	}; 	return (y)
+  y = NULL
+  for (i in oneSide:length(x)) {
+    y[i] = sem( x[ (i-oneSide):(i+oneSide) ] )
+  };  return (y)
 }
 
 imovingSEM <- function(x, oneSide = 5) { # Calculates the moving / rolling standard error of the mean (SEM). It calculates it to the edge of the vector with incrementally smaller window-size.
-	y = NULL
-	for (i in 1:length(x)) {
-		oneSideDynamic = min(i-1, oneSide, length(x)-i); oneSideDynamic
-		indexx = (i-oneSideDynamic):(i+oneSideDynamic);indexx
-		y[i] = sem( x[ indexx ] )
-	}; 	return (y)
+  y = NULL
+  for (i in 1:length(x)) {
+    oneSideDynamic = min(i-1, oneSide, length(x)-i); oneSideDynamic
+    indexx = (i-oneSideDynamic):(i+oneSideDynamic);indexx
+    y[i] = sem( x[ indexx ] )
+  };  return (y)
 }
 
 ## String operations  -------------------------------------------------------------------------------------------------
 eval_parse_kollapse <- function( ... ){ # evaluate and parse (dyn_var_caller)
-	substitute(eval(parse(text=kollapse( ... , print=FALSE))))
+  substitute(eval(parse(text=kollapse( ... , print=FALSE))))
 }
 
 lookup <- function(needle, haystack, exact =TRUE, report = FALSE) { # Awesome pattern matching for a set of values in another set of values. Returns a list with all kinds of results.
-	ls_out = as.list( c(ln_needle = length(needle), ln_haystack = length(haystack), ln_hits = "",  hit_poz = "", hits = "") )
-	Findings = numeric(0)
-	ln_needle = length(needle)
-	if (exact) {
-		for (i in 1:ln_needle) {			Findings= c(Findings, which(haystack == needle[i]) )		} # for
-	} else {
-		for (i in 1:ln_needle) {			Findings = c(Findings, grep(needle[i], haystack,  ignore.case = TRUE, perl = FALSE))		} # for
-	} # exact or partial match
-	ls_out$'hit_poz' = Findings
-	ls_out$'ln_hits' = length(Findings)
-	ls_out$'hits' = haystack[Findings]
-	if (length(Findings)) {	ls_out$'nonhits' = haystack[-Findings]
-	} else { 			ls_out$'nonhits' = haystack	}
-	if (report){
-		llprint (length(Findings), "/", ln_needle, '(', percentage_formatter(length(Findings)/ln_needle)
-					 , ") of", substitute(needle), "were found among", length(haystack), substitute(haystack), "." )
-		if (length(Findings)) { llprint( substitute(needle), "findings: ", paste ( haystack[Findings], sep= " " ) ) }
-	} else { iprint(length(Findings), "Hits:", haystack[Findings]) } # if (report)
-	return (ls_out)
+  ls_out = as.list( c(ln_needle = length(needle), ln_haystack = length(haystack), ln_hits = "",  hit_poz = "", hits = "") )
+  Findings = numeric(0)
+  ln_needle = length(needle)
+  if (exact) {
+    for (i in 1:ln_needle) {      Findings= c(Findings, which(haystack == needle[i]) )    } # for
+  } else {
+    for (i in 1:ln_needle) {      Findings = c(Findings, grep(needle[i], haystack,  ignore.case = TRUE, perl = FALSE))    } # for
+  } # exact or partial match
+  ls_out$'hit_poz' = Findings
+  ls_out$'ln_hits' = length(Findings)
+  ls_out$'hits' = haystack[Findings]
+  if (length(Findings)) { ls_out$'nonhits' = haystack[-Findings]
+  } else {      ls_out$'nonhits' = haystack }
+  if (report){
+    llprint (length(Findings), "/", ln_needle, '(', percentage_formatter(length(Findings)/ln_needle)
+           , ") of", substitute(needle), "were found among", length(haystack), substitute(haystack), "." )
+    if (length(Findings)) { llprint( substitute(needle), "findings: ", paste ( haystack[Findings], sep= " " ) ) }
+  } else { iprint(length(Findings), "Hits:", haystack[Findings]) } # if (report)
+  return (ls_out)
 }
 
 
@@ -1054,7 +1054,7 @@ richColors <- function (n=3) { gplots::rich.colors(n) } # Alias for rich.colors 
 
 
 Color_Check <- function(..., incrBottMarginBy=0, savefile = FALSE ) { # Display the colors encoded by the numbers / color-ID-s you pass on to this function
-  if (incrBottMarginBy) { .ParMarDefault <- par("mar"); 	par(mar=c(par("mar")[1]+incrBottMarginBy, par("mar")[2:4]) ) } 	# Tune the margin
+  if (incrBottMarginBy) { .ParMarDefault <- par("mar");   par(mar=c(par("mar")[1]+incrBottMarginBy, par("mar")[2:4]) ) }  # Tune the margin
   Numbers  = c(...)
   if (length(names(Numbers)) == length(Numbers)) {labelz = names(Numbers)} else {labelz = Numbers}
   barplot (rep(10, length(Numbers)), col = Numbers, names.arg = labelz, las=2 )
@@ -1173,9 +1173,9 @@ array.fromNames <- function(rowname_vec=1:3, colname_vec=letters[1:2], z_name_ve
 
 what <- function(x, printme=0) { # A better version of is(). It can print the first "printme" elements.
   iprint (is (x), "; nr. of elements:", length (x))
-  if (is.numeric (x) ) 		{ iprint ("min&max:", range(x) ) } else {print ("Not numeric")}
-  if ( length(dim(x) ) > 0 ) 	{ iprint ("Dim:", dim (x) )	}
-  if ( printme>0) 			{ iprint ("Elements:", x[0:printme] )	}
+  if (is.numeric (x) )    { iprint ("min&max:", range(x) ) } else {print ("Not numeric")}
+  if ( length(dim(x) ) > 0 )  { iprint ("Dim:", dim (x) ) }
+  if ( printme>0)       { iprint ("Elements:", x[0:printme] ) }
   head (x)
 }
 
@@ -1184,14 +1184,14 @@ idim <- function(any_object) { # A dim() function that can handle if you pass on
     if (is.list(any_object)) { print("list") } #if
     print(length(any_object))
   }
-  else {	print(dim(any_object))	}
+  else {  print(dim(any_object))  }
 }
 
 idimnames <- function(any_object) { # A dimnames() function that can handle if you pass on a vector: it gives back the names.
-  if (!is.null(dimnames(any_object))) 	{ print(dimnames(any_object)) }
-  else if (!is.null(colnames(any_object))) { iprint("colnames:", colnames(any_object))	}
-  else if (!is.null(rownames(any_object))) { iprint("rownames:", rownames(any_object))	}
-  else if (!is.null(names(any_object))) { iprint("names:", names(any_object))	}
+  if (!is.null(dimnames(any_object)))   { print(dimnames(any_object)) }
+  else if (!is.null(colnames(any_object))) { iprint("colnames:", colnames(any_object))  }
+  else if (!is.null(rownames(any_object))) { iprint("rownames:", rownames(any_object))  }
+  else if (!is.null(names(any_object))) { iprint("names:", names(any_object)) }
 }
 
 table_fixed_categories <- function(vector, categories_vec) { # generate a table() with a fixed set of categories. It fills up the table with missing categories, that are relevant when comparing to other vectors.
@@ -1206,19 +1206,19 @@ table_fixed_categories <- function(vector, categories_vec) { # generate a table(
 stopif2 <- function(condition, ...) { if(condition) {iprint (...); stop()} } # Stop script if the condition is met. You can parse anything (e.g. variables) in the message
 
 most_frequent_elements <- function(thingy, topN=10) { # Show the most frequent elements of a table
-	tail(sort(table(thingy, useNA = "ifany")), topN)
+  tail(sort(table(thingy, useNA = "ifany")), topN)
 }
 
 top_indices <- function(x, n = 3, top = TRUE){ # Returns the position / index of the n highest values. For equal values, it maintains the original order
-	head( order(x, decreasing =top), n )
+  head( order(x, decreasing =top), n )
 }
 
 percentile2value <- function(distribution, percentile = 0.95, FirstValOverPercentile =TRUE) { # Calculate what is the actual value of the N-th percentile in a distribution or set of numbers. Useful for calculating cutoffs, and displaying them by whist()'s "vline" paramter.
-	index = percentile * length(distribution)
-	if (FirstValOverPercentile){ index = ceiling(index)
-	} else {index = floor(index) }
-	value = sort(distribution)[index]
-	return (value)
+  index = percentile * length(distribution)
+  if (FirstValOverPercentile){ index = ceiling(index)
+  } else {index = floor(index) }
+  value = sort(distribution)[index]
+  return (value)
 }
 
 MaxN <- function(vec=rpois(4, lambda = 3), topN=2) { # find second (third…) highest/lowest value in vector
@@ -1620,8 +1620,8 @@ memory.biggest.objects <- function(n=10) { # Show distribution of the largest ob
   pie(Memorty.usage.stat, cex=.5, sub=make.names(date()))
   try(wpie(Memorty.usage.stat, cex=.5, savefile = FALSE ), silent = T)
   # Use wpie if you have MarkdownReports, from https://github.com/vertesy/MarkdownReports
-  print(topX)
-  print("rm(list=c( 'objectA',  'objectB'))")
+  dput(names(topX))
+  iprint("rm(list=c( 'objectA',  'objectB'))")
   # inline_vec.char(names(topX))
   # Use inline_vec.char if you have DataInCode, from https://github.com/vertesy/DataInCode
 }
@@ -1671,7 +1671,7 @@ link_google <- function (vector_of_gene_symbols, prefix ="", suffix ="", writeOu
     if (sleep>0) { bash_commands = paste0(bash_commands, ' ; sleep ', sleep) } # if wait
     write.simple.append("", ManualName = BashScriptLocation)
     write.simple.append(bash_commands, ManualName = BashScriptLocation)
-  } else if (Open) { for (linkX in links) Sys.sleep(0.3+runif(1)); browseURL(linkX, encodeIfNeeded = T) }	else { return(links) }
+  } else if (Open) { for (linkX in links) Sys.sleep(0.3+runif(1)); browseURL(linkX, encodeIfNeeded = T) } else { return(links) }
 }
 
 # link.google.clipboard = c lipr::write_clip(link_google(clipr::read_clip()))
@@ -1689,7 +1689,7 @@ link_bing <- function (vector_of_gene_symbols, prefix ="", suffix ="", writeOut 
     if (sleep>0) { bash_commands = paste0(bash_commands, ' ; sleep ', sleep) } # if wait
     write.simple.append("", ManualName = BashScriptLocation)
     write.simple.append(bash_commands, ManualName = BashScriptLocation)
-  } else if (Open) { for (linkX in links) Sys.sleep(0.3+runif(1)); browseURL(linkX, encodeIfNeeded = T) }	else { return(links) }
+  } else if (Open) { for (linkX in links) Sys.sleep(0.3+runif(1)); browseURL(linkX, encodeIfNeeded = T) } else { return(links) }
 }
 
 
@@ -1833,4 +1833,4 @@ col2named.vec.tbl <- function(tbl.2col) { # Convert a 2-column table (data frame
 }
 
 
-
+any.duplicated.rownames.ls.of.df <- function(ls) any.duplicated(rownames(ls)) # Check if there are any duplocated rownames in a list of dataframes.
