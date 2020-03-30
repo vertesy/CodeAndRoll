@@ -75,6 +75,10 @@ grepv <- function (pattern, x, ignore.case = FALSE, perl = FALSE, value = FALSE,
                    , invert = FALSE, ...) grep(pattern, x, ignore.case = ignore.case, perl = perl, fixed = fixed
                                                , useBytes = useBytes, invert = invert, ..., value = TRUE)
 
+oo <- function() { # Open current working directory.
+  system("open .")
+}
+
 # detach_package <-
 unload <- function(pkg, character.only = FALSE) { # Unload a package. Source: https://stackoverflow.com/questions/6979917/how-to-unload-a-package-without-restarting-r
   if(!character.only)
@@ -88,28 +92,6 @@ unload <- function(pkg, character.only = FALSE) { # Unload a package. Source: ht
   }
 }
 ## File handling, export, import [read & write] -------------------------------------------------------------------------------------------------
-
-### Clipboard interaction -------------------------------------------------------------------------------------------------
-# https://github.com/vertesy/DataInCode
-# try(source("~/Github/TheCorvinas/R/DataInCode/DataInCode.R"), silent = FALSE)
-
-clip2clip.vector <- function() { # Copy from clipboard (e.g. excel) to a R-formatted vector to the  clipboard
-  x = dput(clipr::read_clip() )
-  clipr::write_clip(
-    utils::capture.output(x)
-  )
-  print(x)
-}
-
-
-clip2clip.commaSepString <- function() { # read a comma separated string (e.g. list of gene names) and properly format it for R.
-  x = unlist(strsplit(clipr::read_clip(), split = ','))
-  clipr::write_clip(
-    utils::capture.output(x)
-  )
-  print(x)
-}
-
 
 ### Reading files in -------------------------------------------------------------------------------------------------
 read.simple.vec <- function(...) { # Read each line of a file to an element of a vector (read in new-line separated values, no header!).
@@ -219,6 +201,16 @@ read.simple.xls <- function(pfn = kollapse(...), row_namePos=NULL, ..., header_ 
   return(ExpData);
 }
 
+sourcePartial <- function(fn,startTag='#1',endTag='#/1') { # Source parts of another script. Source: https://stackoverflow.com/questions/26245554/execute-a-set-of-lines-from-another-r-file
+  lines <- scan(fn, what=character(), sep="\n", quiet=TRUE)
+  st<-grep(startTag,lines)
+  en<-grep(endTag,lines)
+  tc <- textConnection(lines[(st+1):(en-1)])
+  source(tc)
+  close(tc)
+}
+
+
 
 ### Writing files out -------------------------------------------------------------------------------------------------
 
@@ -261,6 +253,41 @@ write.simple.append <- function(input_df, extension='tsv', ManualName ="", o = F
 } # fun
 
 
+jjpegA4 <- function(filename, r = 225, q = 90) { # Setup an A4 size jpeg
+  jpeg(file=filename,width=wA4, height=hA4, units = 'in', quality = q,res = r)
+}
+
+extPDF <- function(vec) ppp(vec, "pdf") # add pdf as extension to a file name
+
+extPNG <- function(vec) ppp(vec, "png") # add png as extension to a file name
+
+
+### Clipboard interaction -------------------------------------------------------------------------------------------------
+# https://github.com/vertesy/DataInCode
+# try(source("~/Github/TheCorvinas/R/DataInCode/DataInCode.R"), silent = FALSE)
+
+clip2clip.vector <- function() { # Copy from clipboard (e.g. excel) to a R-formatted vector to the  clipboard
+  x = dput(clipr::read_clip() )
+  clipr::write_clip(
+    utils::capture.output(x)
+  )
+  print(x)
+}
+
+
+clip2clip.commaSepString <- function() { # Read a comma separated string (e.g. list of gene names) and properly format it for R.
+  x = unlist(strsplit(clipr::read_clip(), split = ','))
+  clipr::write_clip(
+    utils::capture.output(x)
+  )
+  print(x)
+}
+
+write_clip.replace.dot <- function(var=df.markers, decimal_mark = ',') { # Clipboard export for da wonderful countries with where "," is the decimal
+  write_clip(format(var, decimal.mark = decimal_mark) )
+}
+# write_clip.replace.dot(df_markers)
+
 
 ## Vector operations -------------------------------------------------------------------------------------------------
 
@@ -280,7 +307,6 @@ as.named.vector <- function(df_col, WhichDimNames = 1) { # Convert a dataframe c
   names (vecc)= namez
   return (vecc)
 }
-
 
 col2named.vector <- function(df_col) { # Convert a dataframe column into a vector, keeping the corresponding dimension name.
   namez = rownames(df_col)
@@ -336,12 +362,6 @@ flip_value2name <- function(named_vector, NumericNames =FALSE, silent = F) { # F
 }
 
 value2name_flip = flip_value2name
-# sortbyitsnames <- function(vec_or_list) { # Sort a vector by the alphanumeric order of its names (instead of its values).
-#   print("THIS FUCNTION MAKES MISTAKES WITH DUPLICATE NAMES")
-#   if (is.vector(vec_or_list) & !is.list(vec_or_list)) { vec[gtools::mixedsort(names(vec_or_list) )]
-#   } else if (is.list(vec_or_list)) {  reorder.list(L = (vec_or_list), namesOrdered = gtools::mixedsort(names(vec_or_list))) }
-#   }
-
 
 sortbyitsnames <- function(vec_or_list, decreasing=FALSE, ...) { # Sort a vector by the alphanumeric order of its names (instead of its values).
   xx = names(vec_or_list)
@@ -373,6 +393,57 @@ which.NA <- function(vec, orig=F) { # orig =rownames(sc@expdata)
   return(NAs)
 }
 
+pad.na <- function(x, len) { c(x, rep(NA, len-length(x))) } # Fill up with a vector to a given length with NA-values at the end.
+
+
+clip.values <- function(valz, high=TRUE, thr=3) { # Signal clipping. Cut values above or below a threshold.
+  if (high) { valz[valz>thr]=thr
+  } else{     valz[valz<thr]=thr}
+  valz
+}
+
+clip.outliers <- function(valz, high=TRUE, probs = c(.01, .99), na.rm = TRUE, showhist=FALSE,...) { # Signal clipping based on the input data's distribution. It clips values above or below the extreme N% of the distribution.
+  qnt <- quantile(valz, probs=probs, na.rm = na.rm)
+  if (showhist) { whist(unlist(valz), breaks =50 ,vline = qnt, filtercol = -1)} #if
+  y <- valz
+  y[valz < qnt[1]] <- qnt[1]
+  y[valz > qnt[2]] <- qnt[2]
+  y
+}
+
+#' as.logical.wNames
+#'
+#' Converts your input vector into a logical vector, and puts the original character values
+#' into the names of the new vector, unless it already has names.
+#' @param x A vector with names that will be converted to a logical vector
+#' @param ... Pass any other argument.
+#' @export
+#' @examples x = -1:2; names(x) = LETTERS[1:4]; as.logical.wNames(x)
+
+as.logical.wNames <- function(x, ...) { # Converts your input vector into a logical vector, and puts the original character values into the names of the new vector, unless it already has names.
+  numerified_vec = as.logical(x, ...)
+  if (!is.null(names(x))) {names (numerified_vec) = names (x)}
+  return(numerified_vec)
+}
+
+col2named.vec.tbl <- function(tbl.2col) { # Convert a 2-column table (data frame) into a named vector. 1st column will be used as names.
+  nvec = tbl.2col[[2]]
+  names(nvec) = tbl.2col[[1]]
+  nvec
+}
+
+
+iterBy.over <- function(yourvec, by=9) { # Iterate over a vector by every N-th element.
+  steps = ceiling(length(yourvec)/by)
+  lsX = split(yourvec, sort(rank(yourvec) %% steps))
+  names(lsX) = 1:length(lsX)
+  lsX
+} # for (i in iterBy.over(yourvec = x)) { print(i) }
+
+zigzagger <- function (vec=1:9) { # mix entries so that they differ
+  intermingle2vec(vec, rev(vec))[1:length(vec)]
+}
+
 
 ### Vector filtering  -------------------------------------------------------------------------------------------------
 
@@ -384,13 +455,13 @@ which_names_grep <- function(named_Vec, pattern) { # Return the vector elements 
   return(named_Vec[idx])
 }
 
-
-na.omit.mat <- function(mat, any = TRUE) { # Omit rows with NA values from a matrix. Rows with any, or full of NA-s
-  mat=as.matrix(mat)
-  stopifnot(length(dim(mat))==2)
-  if (any) outMat = mat[ !is.na(rowSums(mat)), ]
-  else outMat = mat[ (rowSums(is.na(mat)) <= ncol(mat)), ] # keep rows not full with NA
-  outMat
+na.omit.strip <- function(vec, silent = FALSE) { # Calls na.omit() and returns a clean vector
+  if (is.data.frame(vec)) {
+    if ( min(dim(vec)) > 1 & silent == FALSE) { iprint(dim(vec), "dimensional array is converted to a vector.") }
+    vec = unlist(vec) }
+  clean = na.omit(vec)
+  attributes(clean)$na.action <- NULL
+  return(clean)
 }
 
 inf.omit <- function(vec) { # Omit infinite values from a vector.
@@ -423,7 +494,6 @@ NrAndPc <- function(logical_vec=idx_localised, total=TRUE, NArm=TRUE) { # Summar
   x=paste0(pc_TRUE(logical_vec), " or ", sum(logical_vec, na.rm = NArm))
   if(total) paste0(x, " of ", length(logical_vec))
 }
-
 
 
 pc_in_total_of_match <- function(vec_or_table, category, NA_omit=TRUE) { # Percentage of a certain value within a vector or table.
@@ -459,6 +529,7 @@ simplify_categories <- function(category_vec, replaceit , to ) { # Replace every
   category_vec[matches] =  to
   return(category_vec)
 }
+
 
 ## Matrix operations -------------------------------------------------------------------------------------------------
 rotate <- function(x, clockwise=TRUE) { # rotate a matrix 90 degrees.
@@ -521,8 +592,7 @@ colACF.exactLag <- function(x, na_pass=na.pass, lag=1, plot=FALSE, ...) { # RETU
 }
 
 
-# See more: https://stackoverflow.com/questions/20596433/how-to-divide-each-row-of-a-matrix-by-elements-of-a-vector-in-r
-colDivide <- function(mat, vec) { # divide by column
+colDivide <- function(mat, vec) { # divide by column # See more: https://stackoverflow.com/questions/20596433/how-to-divide-each-row-of-a-matrix-by-elements-of-a-vector-in-r
   stopifnot(NCOL(mat)== length(vec))
   mat / vec[col(mat)] # fastest
 }
@@ -737,6 +807,16 @@ remove.na.cols <- function(mat) { # cols have to be a vector of numbers correspo
   return(mat[, idxOK])
 }
 
+na.omit.mat <- function(mat, any = TRUE) { # Omit rows with NA values from a matrix. Rows with any, or full of NA-s
+  mat=as.matrix(mat)
+  stopifnot(length(dim(mat))==2)
+  if (any) outMat = mat[ !is.na(rowSums(mat)), ]
+  else outMat = mat[ (rowSums(is.na(mat)) <= ncol(mat)), ] # keep rows not full with NA
+  outMat
+}
+
+
+any.duplicated.rownames.ls.of.df <- function(ls) any.duplicated(rownames(ls)) # Check if there are any duplocated rownames in a list of dataframes.
 
 
 ## List operations -------------------------------------------------------------------------------------------------
@@ -804,50 +884,15 @@ as.listalike <- function(vec, list_wannabe) { # convert a vector to a list with 
 }
 
 
-# # primitive, legacy function
-# list2df.unordered <- function(L) { # When converting a list to a data frame, the list elements can have different lengths. This function fills up the data frame with NA values.
-#   maxlen <- max(sapply(L, length))
-#   do.call(data.frame, lapply(L, pad.na, len=maxlen))
-# }
-# # list2df.unordered = list2df_NA_padded
-#
-# list2df <- function(your_list ) { do.call(cbind.data.frame, your_list)} # Basic list-to-df functionality in R
-#
-# list2df_presence <- function(yalist, entries_list = FALSE, matrixfill = "") { # Convert a list to a full dataframe, summarizing the presence or absence of elements
-#   if( is.null(names(yalist)) ) {names(yalist) = 1:length(yalist)}
-#
-#   rown = unique(unlist(yalist))
-#   coln =  names(yalist)
-#   mm = matrix.fromNames(rown, coln, fill = matrixfill)
-#   entries_list = lapply(yalist, names)
-#
-#   for (i in 1:length(yalist)) {
-#     print(i)
-#     le = unlist(yalist[i])
-#     names(le) = unlist(entries_list[i])
-#
-#     list_index = which( le  %in% rown)
-#     m_index = which( rown %in% le)
-#     mm[ m_index, i] = names(le[list_index])
-#   }
-#   return(mm)
-# }
-#
-#
-# list2fullDF <- function(ll, byRow=TRUE){ # convert a list to a full numeric data matrix. Designed for occurence counting, think tof table()
-#   entrytypes = unique(unlist(lapply(ll, names)))
-#   ls_len  = length(ll)
-#   mat =matrix(0, ncol = ls_len, nrow = length(entrytypes))
-#   colnames(mat) = if (length(names(ll))) names(ll) else 1:ls_len
-#   rownames(mat) = sort(entrytypes)
-#   for (i in 1:length(ll)) {
-#     mat[names(ll[[i]]) , i] = ll[[i]]
-#     print(names(ll[[i]]))
-#   }
-#   if(!byRow) {mat = t(mat)}
-#   return(mat)
-# }
-# list_to_fullDF = list2fullDF
+
+reverse.list.hierarchy <- function(ll) { # reverse list hierarchy
+  ## https://stackoverflow.com/a/15263737
+  nms <- unique(unlist(lapply(ll, function(X) names(X))))
+  ll <- lapply(ll, function(X) setNames(X[nms], nms))
+  ll <- apply(do.call(rbind, ll), 2, as.list)
+  lapply(ll, function(X) X[!sapply(X, is.null)])
+}
+
 
 #' list2fullDF.byNames
 #' # Convert a list to a full matrix.  Rows = names(union.ls(your_list)) or all names of within list elements, columns = names(your_list).
@@ -940,30 +985,41 @@ intermingle.cbind <- function(df1, df2) { # Combine 2 data frames (of the same l
   return(NewMatr)
 }
 
-pad.na <- function(x, len) { c(x, rep(NA, len-length(x))) } # Fill up with a vector to a given length with NA-values at the end.
-
-
-clip.values <- function(valz, high=TRUE, thr=3) { # Signal clipping. Cut values above or below a threshold.
-  if (high) { valz[valz>thr]=thr
-  } else{     valz[valz<thr]=thr}
-  valz
-}
-
-clip.outliers <- function(valz, high=TRUE, probs = c(.01, .99), na.rm = TRUE, showhist=FALSE,...) { # Signal clipping based on the input data's distribution. It clips values above or below the extreme N% of the distribution.
-  qnt <- quantile(valz, probs=probs, na.rm = na.rm)
-  if (showhist) { whist(unlist(valz), breaks =50 ,vline = qnt, filtercol = -1)} #if
-  y <- valz
-  y[valz < qnt[1]] <- qnt[1]
-  y[valz > qnt[2]] <- qnt[2]
-  y
-}
-
-
 ls2categvec <- function(your_list ) { # Convert a list to a vector repeating list-element names, while vector names are the list elements
   VEC = rep(names(your_list),unlapply(your_list, length))
   names(VEC) = unlist(your_list, use.names = TRUE)
   return(VEC)
 }
+
+
+## Work with multi dimensional lists --------------------------------
+
+copy.dimension.and.dimnames <- function(list.1D, obj.2D) { # copy dimension and dimnames
+  dim(list.1D) <- dim(obj.2D)
+  dimnames(list.1D) <- dimnames(obj.2D)
+  list.1D
+}
+
+mdlapply <- function(list_2D, ...) { #  lapply for multidimensional arrays
+  x = lapply(list_2D, ...)
+  copy.dimension.and.dimnames(x,list_2D)
+}
+
+
+arr.of.lists.2.df <- function(two.dim.arr.of.lists) { # simplify 2D-list-array to a DF
+  list.1D = unlist(two.dim.arr.of.lists)
+  dim(list.1D) <- dim(two.dim.arr.of.lists)
+  dimnames(list.1D) <- dimnames(two.dim.arr.of.lists)
+  list.1D
+}
+
+
+mdlapply2df <- function(list_2D, ...) { # multi dimensional lapply + arr.of.lists.2.df (simplify 2D-list-array to a DF)
+  x = lapply(list_2D, ...)
+  z = copy.dimension.and.dimnames(x,list_2D)
+  arr.of.lists.2.df(z)
+}
+
 
 
 ## Set operations -------------------------------------------------------------------------------------------------
@@ -1341,24 +1397,6 @@ annot_row.create.pheatmap.df <- function(data, annot_df_per_row, annot_names=NUL
 
 
 ## New additions -----------------------------------------------------------------------------------------------------
-wPairConnector <- function(DFrn=A3, PairAnnot=Sisters, verbose=FALSE, addlabels=FALSE, ...) { # Connect Pairs of datapoints with a line on a plot.
-  RN = rownames(DFrn)
-  stopifnot(length(RN) == NROW(DFrn))
-  Siz = Sisters[unique(RN)]
-  LS = splititsnames_byValues(Siz)
-  LengZ =unlapply(LS, length)
-  Tx = table(LengZ); Tx
-  if (verbose) iprint(paste(names(Tx), Tx, sep = ":", collapse = " and "))
-  LScool = LS[LengZ==2]
-  i =1
-  for (i in 1:length(LScool) ) {
-    P = LScool[[i]]
-    segments( DFrn[ P[1], 1], DFrn[ P[1], 2],
-              DFrn[ P[2], 1], DFrn[ P[2], 2], ...)
-  } #for
-  if(addlabels)  text( DFrn, labels = Sisters[RN], srt=65, cex=.75, pos=4)
-}
-
 
 numerate <- function(x=1, y=100, zeropadding = TRUE, pad_length = floor( log10( max(abs(x), abs(y)) ) )+1) { # numerate from x to y with additonal zeropadding
   z = x:y
@@ -1374,9 +1412,6 @@ printEveryN <- function( i, N=1000) { if((i %% N) == 0 ) iprint(i) } # Report at
 #   for (i in 1:length(vec)) {   new[i] = if (i%%2) vec[i] else rev(vec)[i-mod] } ; return(new)
 # }
 
-zigzagger <- function (vec=1:9) { # mix entries so that they differ
-  intermingle2vec(vec, rev(vec))[1:length(vec)]
-}
 
 
 irequire <- function (package) { package_ = as.character(substitute(package)); print(package_); # Load a package. If it does not exist, try to install it from CRAN.
@@ -1576,34 +1611,6 @@ legend.col <- function(col, lev){ # Legend color. # Source: https://aurelienmado
 
 
 
-# Work with multi dimensional lists --------------------------------
-
-copy.dimension.and.dimnames <- function(list.1D, obj.2D) { # copy dimension and dimnames
-  dim(list.1D) <- dim(obj.2D)
-  dimnames(list.1D) <- dimnames(obj.2D)
-  list.1D
-}
-
-mdlapply <- function(list_2D, ...) { #  lapply for multidimensional arrays
-  x = lapply(list_2D, ...)
-  copy.dimension.and.dimnames(x,list_2D)
-}
-
-
-arr.of.lists.2.df <- function(two.dim.arr.of.lists) { # simplify 2D-list-array to a DF
-  list.1D = unlist(two.dim.arr.of.lists)
-  dim(list.1D) <- dim(two.dim.arr.of.lists)
-  dimnames(list.1D) <- dimnames(two.dim.arr.of.lists)
-  list.1D
-}
-
-
-mdlapply2df <- function(list_2D, ...) { # multi dimensional lapply + arr.of.lists.2.df (simplify 2D-list-array to a DF)
-  x = lapply(list_2D, ...)
-  z = copy.dimension.and.dimnames(x,list_2D)
-  arr.of.lists.2.df(z)
-}
-
 
 # Memory management ----------------------------------------------------------------------------------
 # https://stackoverflow.com/questions/17218404/should-i-get-a-habit-of-removing-unused-variables-in-r
@@ -1624,16 +1631,6 @@ memory.biggest.objects <- function(n=10) { # Show distribution of the largest ob
   iprint("rm(list=c( 'objectA',  'objectB'))")
   # inline_vec.char(names(topX))
   # Use inline_vec.char if you have DataInCode, from https://github.com/vertesy/DataInCode
-}
-
-
-na.omit.strip <- function(vec, silent = FALSE) { # Calls na.omit() and returns a clean vector
-  if (is.data.frame(vec)) {
-    if ( min(dim(vec)) > 1 & silent == FALSE) { iprint(dim(vec), "dimensional array is converted to a vector.") }
-    vec = unlist(vec) }
-  clean = na.omit(vec)
-  attributes(clean)$na.action <- NULL
-  return(clean)
 }
 
 
@@ -1658,13 +1655,15 @@ md.LinkTable <- function(tableOfLinkswRownames) { # Take a dataframe where every
                                FullPath = paste0(OutDir, substitute(tableOfLinkswRownames), ".tsv.md"))
 }
 
+# Search query links ------------------------------------------------------------------------
 
-# Google search URL / search query links ------------------------------------------------------------------------
-google="http://www.google.com/search?as_q="
+# Google search URL / search query links
 b.dbl.writeOut =F
 b.dbl.Open =F
 
-link_google <- function (vector_of_gene_symbols, prefix ="", suffix ="", writeOut = b.dbl.writeOut, Open = b.dbl.Open, sleep=0) { # Parse wormbase database links to your list of gene symbols. "additional_terms" can be any vector of strings that will be searched for together with each gene.
+link_google <- function (vector_of_gene_symbols # Parse wormbase database links to your list of gene symbols. "additional_terms" can be any vector of strings that will be searched for together with each gene.
+                         ,google="http://www.google.com/search?as_q=", prefix ="", suffix =""
+                         , writeOut = b.dbl.writeOut, Open = b.dbl.Open, sleep=0) {
   links = paste0( google, prefix," ", vector_of_gene_symbols," ", suffix)
   if (writeOut) {
     bash_commands = paste0("open '", links, "'")
@@ -1674,15 +1673,14 @@ link_google <- function (vector_of_gene_symbols, prefix ="", suffix ="", writeOu
   } else if (Open) { for (linkX in links) Sys.sleep(0.3+runif(1)); browseURL(linkX, encodeIfNeeded = T) } else { return(links) }
 }
 
-# link.google.clipboard = c lipr::write_clip(link_google(clipr::read_clip()))
+
+# link.google.clipboard = clipr::write_clip(link_google(clipr::read_clip()))
 
 
-# Bing search URL / search query links ------------------------------------------------------------------------
-bing="https://www.bing.com/search?q="
-b.dbl.writeOut =F
-b.dbl.Open =F
-
-link_bing <- function (vector_of_gene_symbols, prefix ="", suffix ="", writeOut = b.dbl.writeOut, Open = b.dbl.Open, sleep=0) { # Parse wormbase database links to your list of gene symbols. "additional_terms" can be any vector of strings that will be searched for together with each gene.
+# Bing search URL / search query links
+link_bing <- function (vector_of_gene_symbols # Parse wormbase database links to your list of gene symbols. "additional_terms" can be any vector of strings that will be searched for together with each gene.
+                       , bing="https://www.bing.com/search?q=", prefix ="", suffix =""
+                       , writeOut = b.dbl.writeOut, Open = b.dbl.Open, sleep=0) {
   links = paste0( bing, prefix," ", vector_of_gene_symbols," ", suffix)
   if (writeOut) {
     bash_commands = paste0("open '", links, "'")
@@ -1691,6 +1689,16 @@ link_bing <- function (vector_of_gene_symbols, prefix ="", suffix ="", writeOut 
     write.simple.append(bash_commands, ManualName = BashScriptLocation)
   } else if (Open) { for (linkX in links) Sys.sleep(0.3+runif(1)); browseURL(linkX, encodeIfNeeded = T) } else { return(links) }
 }
+
+# Biology ------------------------------------------------------------
+
+GC_content <- function(string, len=8) { # GC-content of a string (frequency of G and C letters among all letters).
+  tbl = table_fixed_categories(string, c("A", "T", "G", "C") )
+  sum(tbl[  c("G","C") ]) / sum(tbl)
+}
+
+
+# Temporary  ------------------------------------------------------------
 
 
 #' val2col
@@ -1742,95 +1750,28 @@ val2col <- function (yourdata, # This function converts a vector of values("your
   }
 
 
-#' as.logical.wNames
-#'
-#' Converts your input vector into a logical vector, and puts the original character values
-#' into the names of the new vector, unless it already has names.
-#' @param x A vector with names that will be converted to a logical vector
-#' @param ... Pass any other argument.
-#' @export
-#' @examples x = -1:2; names(x) = LETTERS[1:4]; as.logical.wNames(x)
-
-as.logical.wNames <- function(x, ...) { # Converts your input vector into a logical vector, and puts the original character values into the names of the new vector, unless it already has names.
-  numerified_vec = as.logical(x, ...)
-  if (!is.null(names(x))) {names (numerified_vec) = names (x)}
-  return(numerified_vec)
-}
-
-
-
-iterBy.over <- function(yourvec, by=9) { # Iterate over a vector by every N-th element.
-    steps = ceiling(length(yourvec)/by)
-    lsX = split(yourvec, sort(rank(yourvec) %% steps))
-    names(lsX) = 1:length(lsX)
-    lsX
-} # for (i in iterBy.over(yourvec = x)) { print(i) }
-
-
-
-sourcePartial <- function(fn,startTag='#1',endTag='#/1') { # Source parts of another script. Source: https://stackoverflow.com/questions/26245554/execute-a-set-of-lines-from-another-r-file
-  lines <- scan(fn, what=character(), sep="\n", quiet=TRUE)
-  st<-grep(startTag,lines)
-  en<-grep(endTag,lines)
-  tc <- textConnection(lines[(st+1):(en-1)])
-  source(tc)
-  close(tc)
-}
-
-
-oo <- function(variables) { # Open current working directory.
-  system("open .")
-}
-
-
-jjpegA4 <- function(filename, r = 225, q = 90) { # Setup an A4 size jpeg
-  jpeg(file=filename,width=wA4, height=hA4, units = 'in', quality = q,res = r)
-}
-
 
 param.list.2.fname <- function(ls.of.params=p) { # Take a list of parameters and parse a string from their names and values.
   paste(names(ls.of.params), ls.of.params, sep = ".", collapse = "_")
 }
 
 
-GC_content <- function(string, len=8) { # GC-content of a string (frequency of G and C letters among all letters).
-  tbl = table_fixed_categories(string, c("A", "T", "G", "C") )
-  sum(tbl[  c("G","C") ]) / sum(tbl)
+
+
+
+# TMP ------------------------------------------------------------------------------------------------
+md.List2Table <- function (parameterlist,
+                           title="List elements",
+                           colname2="Value",
+                           maxlen = 20) {
+  LZ = unlist(lapply(parameterlist, length)) # collapse paramters with multiple entires
+  LNG = names(which(LZ > 1))
+  for (i in LNG) {
+    if (length(parameterlist[[i]]) > maxlen)
+      parameterlist[[i]] = parameterlist[[i]][1:maxlen]
+    parameterlist[[i]] = paste(parameterlist[[i]], collapse = ", ")
+  } #for
+  DF = t(as.data.frame(parameterlist))
+  colnames(DF) = colname2
+  md.tableWriter.DF.w.dimnames(DF, title_of_table = title)
 }
-
-
-eucl.dist.pairwise <- function(df2col) { # Calculate pairwise euclidean distance
-  dist_ = abs(df2col[,1]-df2col[,2]) / sqrt(2)
-  if (!is.null(rownames(df2col)))   names(dist_) = rownames(df2col)
-  dist_
-}
-
-sign.dist.pairwise <- function(df2col) { # Calculate absolute value of the pairwise euclidean distance
-  dist_ = abs(df2col[,1]-df2col[,2]) / sqrt(2)
-  if (!is.null(rownames(df2col)))   names(dist_) = rownames(df2col)
-  dist_
-}
-
-
-reverse.list.hierarchy <- function(ll) { # reverse list hierarchy
-  ## https://stackoverflow.com/a/15263737
-  nms <- unique(unlist(lapply(ll, function(X) names(X))))
-  ll <- lapply(ll, function(X) setNames(X[nms], nms))
-  ll <- apply(do.call(rbind, ll), 2, as.list)
-  lapply(ll, function(X) X[!sapply(X, is.null)])
-}
-
-
-extPDF <- function(vec) ppp(vec, "pdf") # add pdf as extension to a file name
-
-extPNG <- function(vec) ppp(vec, "png") # add png as extension to a file name
-
-
-col2named.vec.tbl <- function(tbl.2col) { # Convert a 2-column table (data frame) into a named vector. 1st column will be used as names.
-  nvec = tbl.2col[[2]]
-  names(nvec) = tbl.2col[[1]]
-  nvec
-}
-
-
-any.duplicated.rownames.ls.of.df <- function(ls) any.duplicated(rownames(ls)) # Check if there are any duplocated rownames in a list of dataframes.

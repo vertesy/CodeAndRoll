@@ -7,7 +7,43 @@ wA4 = 8.27 # A4 inches
 hA4 =11.69
 
 # ------------------------------------------------------------------------
+
+
+eucl.dist.pairwise <- function(df2col) { # Calculate pairwise euclidean distance
+  dist_ = abs(df2col[,1]-df2col[,2]) / sqrt(2)
+  if (!is.null(rownames(df2col)))   names(dist_) = rownames(df2col)
+  dist_
+}
+
+sign.dist.pairwise <- function(df2col) { # Calculate absolute value of the pairwise euclidean distance
+  dist_ = abs(df2col[,1]-df2col[,2]) / sqrt(2)
+  if (!is.null(rownames(df2col)))   names(dist_) = rownames(df2col)
+  dist_
+}
+
+
+
 # ------------------------------------------------------------------------
+
+wPairConnector <- function(DFrn=A3, PairAnnot=Sisters, verbose=FALSE, addlabels=FALSE, ...) { # Connect Pairs of datapoints with a line on a plot.
+  RN = rownames(DFrn)
+  stopifnot(length(RN) == NROW(DFrn))
+  Siz = Sisters[unique(RN)]
+  LS = splititsnames_byValues(Siz)
+  LengZ =unlapply(LS, length)
+  Tx = table(LengZ); Tx
+  if (verbose) iprint(paste(names(Tx), Tx, sep = ":", collapse = " and "))
+  LScool = LS[LengZ==2]
+  i =1
+  for (i in 1:length(LScool) ) {
+    P = LScool[[i]]
+    segments( DFrn[ P[1], 1], DFrn[ P[1], 2],
+              DFrn[ P[2], 1], DFrn[ P[2], 2], ...)
+  } #for
+  if(addlabels)  text( DFrn, labels = Sisters[RN], srt=65, cex=.75, pos=4)
+}
+
+
 # ------------------------------------------------------------------------
 
 my_render <- function(input, encoding) { # For Rmarkdown to keep the markdown file after rendering. Source: https://github.com/rstudio/rmarkdown/issues/107
@@ -216,3 +252,57 @@ corner.label.w <- function (label = "A", # Add Legends to the corners. From the 
 #   }
 #   ww.assign_to_global("OutDir", OutDir, 1)
 # }
+
+
+
+# # primitive, legacy function
+# list2df.unordered <- function(L) { # When converting a list to a data frame, the list elements can have different lengths. This function fills up the data frame with NA values.
+#   maxlen <- max(sapply(L, length))
+#   do.call(data.frame, lapply(L, pad.na, len=maxlen))
+# }
+# # list2df.unordered = list2df_NA_padded
+#
+# list2df <- function(your_list ) { do.call(cbind.data.frame, your_list)} # Basic list-to-df functionality in R
+#
+# list2df_presence <- function(yalist, entries_list = FALSE, matrixfill = "") { # Convert a list to a full dataframe, summarizing the presence or absence of elements
+#   if( is.null(names(yalist)) ) {names(yalist) = 1:length(yalist)}
+#
+#   rown = unique(unlist(yalist))
+#   coln =  names(yalist)
+#   mm = matrix.fromNames(rown, coln, fill = matrixfill)
+#   entries_list = lapply(yalist, names)
+#
+#   for (i in 1:length(yalist)) {
+#     print(i)
+#     le = unlist(yalist[i])
+#     names(le) = unlist(entries_list[i])
+#
+#     list_index = which( le  %in% rown)
+#     m_index = which( rown %in% le)
+#     mm[ m_index, i] = names(le[list_index])
+#   }
+#   return(mm)
+# }
+#
+#
+# list2fullDF <- function(ll, byRow=TRUE){ # convert a list to a full numeric data matrix. Designed for occurence counting, think tof table()
+#   entrytypes = unique(unlist(lapply(ll, names)))
+#   ls_len  = length(ll)
+#   mat =matrix(0, ncol = ls_len, nrow = length(entrytypes))
+#   colnames(mat) = if (length(names(ll))) names(ll) else 1:ls_len
+#   rownames(mat) = sort(entrytypes)
+#   for (i in 1:length(ll)) {
+#     mat[names(ll[[i]]) , i] = ll[[i]]
+#     print(names(ll[[i]]))
+#   }
+#   if(!byRow) {mat = t(mat)}
+#   return(mat)
+# }
+# list_to_fullDF = list2fullDF
+
+
+# sortbyitsnames <- function(vec_or_list) { # Sort a vector by the alphanumeric order of its names (instead of its values).
+#   print("THIS FUCNTION MAKES MISTAKES WITH DUPLICATE NAMES")
+#   if (is.vector(vec_or_list) & !is.list(vec_or_list)) { vec[gtools::mixedsort(names(vec_or_list) )]
+#   } else if (is.list(vec_or_list)) {  reorder.list(L = (vec_or_list), namesOrdered = gtools::mixedsort(names(vec_or_list))) }
+#   }
