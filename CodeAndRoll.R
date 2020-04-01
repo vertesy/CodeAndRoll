@@ -55,7 +55,7 @@ print("Depends on MarkdownReports, gtools, readr, gdata, clipr. Some functions d
 TitleCase=tools::toTitleCase
 sort.natural = gtools::mixedsort
 p0 = paste0
-l=length
+l = length
 
 ppp <- function(...) { paste(..., sep = '.') } # Paste by point
 pps <- function(...) { paste(..., sep = '/') } # Paste by (forward) slash
@@ -584,11 +584,11 @@ acf.exactLag <- function(x, lag=1, na_pass=na.pass, plot=FALSE, ... ) { # Autoco
 }
 
 rowACF.exactLag <- function(x, na_pass=na.pass, lag=1, plot=FALSE, ...) { # RETURNS A Vector for the "lag" based autocorrelation. Calculates the autocorrelation of each row of a numeric matrix / data frame.
-  iround(apply(x, 1, acf.exactLag, lag=lag, plot=plot, ...), digitz = 2)
+  signif(apply(x, 1, acf.exactLag, lag=lag, plot=plot, ...), digits = 2)
 }
 
 colACF.exactLag <- function(x, na_pass=na.pass, lag=1, plot=FALSE, ...) { # RETURNS A Vector for the "lag" based autocorrelation. Calculates the autocorrelation of each row of a numeric matrix / data frame.
-  iround(apply(x, 2, acf.exactLag, lag=lag, plot=plot, ...), digitz = 2)
+  signif(apply(x, 2, acf.exactLag, lag=lag, plot=plot, ...), digits = 2)
 }
 
 
@@ -644,14 +644,14 @@ TPM_normalize <- function(mat, SUM=1e6) { # normalize each column to 1 million
 median_normalize <- function(mat) { # normalize each column to the median of all the column-sums
   cs = colSums(mat, na.rm = TRUE)
   norm_mat = (t(t(mat) / cs)) * median(cs)
-  iprint("colMedians: ", head(iround(colMedians(norm_mat))))
+  iprint("colMedians: ", head(signif(colMedians(norm_mat), digits = 3)))
   return(norm_mat)
 }
 
 mean_normalize <- function(mat) { # normalize each column to the median of the columns
   cs = colSums(mat, na.rm = TRUE)
   norm_mat = (t(t(mat) / cs)) * mean(cs)
-  iprint("colMeans: ", head(iround(colMeans(norm_mat))))
+  iprint("colMeans: ", head(signif(colMeans(norm_mat))))
   return(norm_mat)
 }
 
@@ -1128,17 +1128,17 @@ HeatMapCol_RedBlackGreen <- grDevices::colorRampPalette(c("red", "black", "green
 colSums.barplot <- function (df, col="seagreen2", na_rm =TRUE, ...) { barplot(colSums(df, na.rm = na_rm), col=col, ...) } # Draw a barplot from ColSums of a matrix.
 
 lm_equation_formatter <- function(lm) { # Renders the lm() function's output into a human readable text. (e.g. for subtitles)
-  eq = iround(lm$coefficients);
+  eq = signif(lm$coefficients);
   kollapse ("Intercept: ", eq[1], " Slope: ", eq[2]);
 }
 
 lm_equation_formatter2 <- function(lm) { # Renders the lm() function's output into a human readable text. (e.g. for subtitles)
-  eq = iround(lm$coefficients);
+  eq = signif(lm$coefficients, digits = 3);
   kollapse ("y= ", eq[2], "* x +", eq[1]);
 }
 
 lm_equation_formatter3 <- function(lm, y.var.name="y", x.var.name="x") { # Renders the lm() function's output into a human readable text. (e.g. for subtitles)
-  eq = iround(lm$coefficients);
+  eq = signif(lm$coefficients, digits = 3);
   plusSign = if(sign(eq[1]==1)) "" else "-"
   kollapse (y.var.name, "= ", eq[2], "*",x.var.name," ",plusSign,"", eq[1]);
 }
