@@ -9,18 +9,6 @@ hA4 =11.69
 # ------------------------------------------------------------------------
 
 
-eucl.dist.pairwise <- function(df2col) { # Calculate pairwise euclidean distance
-  dist_ = abs(df2col[,1]-df2col[,2]) / sqrt(2)
-  if (!is.null(rownames(df2col)))   names(dist_) = rownames(df2col)
-  dist_
-}
-
-sign.dist.pairwise <- function(df2col) { # Calculate absolute value of the pairwise euclidean distance
-  dist_ = abs(df2col[,1]-df2col[,2]) / sqrt(2)
-  if (!is.null(rownames(df2col)))   names(dist_) = rownames(df2col)
-  dist_
-}
-
 
 
 # ------------------------------------------------------------------------

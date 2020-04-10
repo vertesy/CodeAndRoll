@@ -91,6 +91,7 @@ unload <- function(pkg, character.only = FALSE) { # Unload a package. Source: ht
     detach(search_item, unload = TRUE, character.only = TRUE)
   }
 }
+
 ## File handling, export, import [read & write] -------------------------------------------------------------------------------------------------
 
 ### Reading files in -------------------------------------------------------------------------------------------------
@@ -1756,6 +1757,28 @@ param.list.2.fname <- function(ls.of.params=p) { # Take a list of parameters and
 }
 
 
+# -------------------------------------------------------------------------------------------------
+# SwapValues <- function(x,y) { # A handy function for swapping a vector with another values. Based on https://stackoverflow.com/questions/32585753/r-swap-two-variables-without-using-a-third
+#   iprint(substitute(x), substitute(y),"swapped values")
+#   ls.swap <- list(y, x)
+#   names(ls.swap) <- c(substitute(x), substitute(y))
+#   # list2env(ls.swap, envir = as.environment(environment()));
+#   list2env(ls.swap, envir = .GlobalEnv);
+#   "Bad - overwrites global env. needs fix"
+# }
+# SwapValues(x = height, y = width); height; width
+
+eucl.dist.pairwise <- function(df2col) { # Calculate pairwise euclidean distance
+  dist_ = abs(df2col[,1]-df2col[,2]) / sqrt(2)
+  if (!is.null(rownames(df2col)))   names(dist_) = rownames(df2col)
+  dist_
+}
+
+sign.dist.pairwise <- function(df2col) { # Calculate absolute value of the pairwise euclidean distance
+  dist_ = abs(df2col[,1]-df2col[,2]) / sqrt(2)
+  if (!is.null(rownames(df2col)))   names(dist_) = rownames(df2col)
+  dist_
+}
 
 
 
