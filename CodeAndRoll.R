@@ -64,6 +64,7 @@ ppd <- function(...) { paste(..., sep = '-') } # Paste by dash
 
 kpp <- function(...) { paste(..., sep = '.', collapse = '.') } # kollapse by point
 kppu <- function(...) { paste(..., sep = '_',  collapse = '_') } # kollapse by underscore
+kpps <- function(...) { paste(..., sep = '/', collapse = '/') } # kollapse by (forward) slash
 kppd <- function(...) { paste(..., sep = '-', collapse = '-') } # kollapse by dash
 
 stry <- function(...) {try(..., silent = T)} # Silent try
@@ -1780,21 +1781,54 @@ sign.dist.pairwise <- function(df2col) { # Calculate absolute value of the pairw
   dist_
 }
 
+# ------------------------------------------------------------------------------------------------
+
+PasteDirNameFromFlags <- function(...) { # Paste a dot (point) separated string from a list of inputs (that can be empty), and clean up the output string from dot multiplets (e.g: ..).
+  flagList <- c(...)
+  pastedFlagList <- kpp(flagList)
+  CleanDirName <- gsub(x = pastedFlagList, pattern = '[\\..]+',replacement = '\\.' )
+  return(CleanDirName)
+}
+# PasteDirNameFromFlags("HCAB"
+#                       , flag.nameiftrue(p$'premRNA')
+#                       , flag.nameiftrue(p$"dSample.Organoids")
+#                       , flag.names_list(p$'variables.2.regress')
+#                       ,  flag.nameiftrue(p$'Man.Int.Order') )
+
+# ------------------------------------------------------------------------------------------------
+PasteOutdirFromFlags <- function(path = "~/Dropbox/Abel.IMBA/AnalysisD", ...) { # Paste OutDir from (1) a path and (2) a from a list of inputs (that can be empty), and clean up the output string from dot and forward slash multiplets (e.g: ..).
+  flagList <- c(path, ...)
+  pastedFlagList <- kpp(flagList)
+  CleanDirName <- gsub(x = pastedFlagList, pattern = '[\\..]+',replacement = '\\.' )
+  # pastedOutDir <- kpps(path, CleanDirName, "/")
+  pastedOutDir <- p0(CleanDirName, "/")
+  CleanDirName <- gsub(x = pastedOutDir, pattern = '[//]+',replacement = '/' )
+  return(CleanDirName)
+}
+# PasteOutdirFromFlags("~/Dropbox/Abel.IMBA/AnalysisD/HCAB"
+#                      , flag.nameiftrue(p$'premRNA')
+#                      , flag.nameiftrue(p$"dSample.Organoids")
+#                      , flag.names_list(p$'variables.2.regress')
+#                      ,  flag.nameiftrue(p$'Man.Int.Order') )
+
+
+
 
 
 # TMP ------------------------------------------------------------------------------------------------
-md.List2Table <- function (parameterlist,
-                           title="List elements",
-                           colname2="Value",
-                           maxlen = 20) {
-  LZ = unlist(lapply(parameterlist, length)) # collapse paramters with multiple entires
-  LNG = names(which(LZ > 1))
-  for (i in LNG) {
-    if (length(parameterlist[[i]]) > maxlen)
-      parameterlist[[i]] = parameterlist[[i]][1:maxlen]
-    parameterlist[[i]] = paste(parameterlist[[i]], collapse = ", ")
-  } #for
-  DF = t(as.data.frame(parameterlist))
-  colnames(DF) = colname2
-  md.tableWriter.DF.w.dimnames(DF, title_of_table = title)
-}
+# Moved to Markdownreports dev
+# md.List2Table <- function (parameterlist,
+#                            title="List elements",
+#                            colname2="Value",
+#                            maxlen = 20) {
+#   LZ = unlist(lapply(parameterlist, length)) # collapse paramters with multiple entires
+#   LNG = names(which(LZ > 1))
+#   for (i in LNG) {
+#     if (length(parameterlist[[i]]) > maxlen)
+#       parameterlist[[i]] = parameterlist[[i]][1:maxlen]
+#     parameterlist[[i]] = paste(parameterlist[[i]], collapse = ", ")
+#   } #for
+#   DF = t(as.data.frame(parameterlist))
+#   colnames(DF) = colname2
+#   md.tableWriter.DF.w.dimnames(DF, title_of_table = title)
+# }
