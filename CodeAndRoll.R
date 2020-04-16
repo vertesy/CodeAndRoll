@@ -1637,26 +1637,6 @@ memory.biggest.objects <- function(n=10) { # Show distribution of the largest ob
 
 
 
-#' md.LinkTable
-#'
-#' Take a dataframe where every entry is a string containing an html link, parse and write out
-#'  a properly formatted markdown table
-#' @param tableOfLinkswRownames a dataframe where every entry is a string containing an html link
-#' @export
-#'
-#' @examples tableOfLinkswRownames(tableOfLinkswRownames = df_of_LinksParsedByDatabaseLinkeR)
-
-md.LinkTable <- function(tableOfLinkswRownames) { # Take a dataframe where every entry is a string containing an html link, parse and write out
-  TBL = tableOfLinkswRownames
-  RN = rownames(tableOfLinkswRownames)
-  for (i in 1:ncol(tableOfLinkswRownames)) {
-    x = tableOfLinkswRownames[, i]
-    TBL[, i] = paste0("[", RN, "]", "(", x, ")")
-  } #for
-  md.tableWriter.DF.w.dimnames(TBL,
-                               FullPath = paste0(OutDir, substitute(tableOfLinkswRownames), ".tsv.md"))
-}
-
 # Search query links ------------------------------------------------------------------------
 
 # Google search URL / search query links
@@ -1816,19 +1796,3 @@ PasteOutdirFromFlags <- function(path = "~/Dropbox/Abel.IMBA/AnalysisD", ...) { 
 
 
 # TMP ------------------------------------------------------------------------------------------------
-# Moved to Markdownreports dev
-# md.List2Table <- function (parameterlist,
-#                            title="List elements",
-#                            colname2="Value",
-#                            maxlen = 20) {
-#   LZ = unlist(lapply(parameterlist, length)) # collapse paramters with multiple entires
-#   LNG = names(which(LZ > 1))
-#   for (i in LNG) {
-#     if (length(parameterlist[[i]]) > maxlen)
-#       parameterlist[[i]] = parameterlist[[i]][1:maxlen]
-#     parameterlist[[i]] = paste(parameterlist[[i]], collapse = ", ")
-#   } #for
-#   DF = t(as.data.frame(parameterlist))
-#   colnames(DF) = colname2
-#   md.tableWriter.DF.w.dimnames(DF, title_of_table = title)
-# }
