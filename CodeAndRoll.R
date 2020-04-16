@@ -1643,7 +1643,7 @@ memory.biggest.objects <- function(n=10) { # Show distribution of the largest ob
 b.dbl.writeOut =F
 b.dbl.Open =F
 
-link_google <- function (vector_of_gene_symbols # Parse wormbase database links to your list of gene symbols. "additional_terms" can be any vector of strings that will be searched for together with each gene.
+link_google <- function (vector_of_gene_symbols #  Parse google search query links to your list of gene symbols. Strings "prefix" and ""suffix" will be searched for together with each gene ("Human ID4 neurons"). See many additional services in [DatabaseLinke.R](https://vertesy.github.io/DatabaseLinke.R/).
                          ,google="http://www.google.com/search?as_q=", prefix ="", suffix =""
                          , writeOut = b.dbl.writeOut, Open = b.dbl.Open, sleep=0) {
   links = paste0( google, prefix," ", vector_of_gene_symbols," ", suffix)
@@ -1660,7 +1660,7 @@ link_google <- function (vector_of_gene_symbols # Parse wormbase database links 
 
 
 # Bing search URL / search query links
-link_bing <- function (vector_of_gene_symbols # Parse wormbase database links to your list of gene symbols. "additional_terms" can be any vector of strings that will be searched for together with each gene.
+link_bing <- function (vector_of_gene_symbols #  Parse bing search query links to your list of gene symbols. Strings "prefix" and ""suffix" will be searched for together with each gene ("Human ID4 neurons"). See many additional services in [DatabaseLinke.R](https://vertesy.github.io/DatabaseLinke.R/).
                        , bing="https://www.bing.com/search?q=", prefix ="", suffix =""
                        , writeOut = b.dbl.writeOut, Open = b.dbl.Open, sleep=0) {
   links = paste0( bing, prefix," ", vector_of_gene_symbols," ", suffix)
