@@ -1,7 +1,7 @@
 ######################################################################
 # A collection of custom R functions
 ######################################################################
-# source ('~/GitHub/CodeAndRoll/CodeAndRoll.R')
+# source('/GitHub/Packages/CodeAndRoll/CodeAndRoll.R')
 
 ## If something is not found:
 # source("~/Github/TheCorvinas/R/RNA_seq_specific_functions.r")
@@ -599,9 +599,21 @@ colDivide <- function(mat, vec) { # divide by column # See more: https://stackov
   mat / vec[col(mat)] # fastest
 }
 
+colMutliply <- function(mat, vec) { # Mutliply by column # See more: https://stackoverflow.com/questions/20596433/how-to-divide-each-row-of-a-matrix-by-elements-of-a-vector-in-r
+  stopifnot(NCOL(mat)== length(vec))
+  mat * vec[col(mat)] # fastest
+}
+
+
+
 rowDivide <- function(mat, vec) { # divide by row
   stopifnot(NROW(mat)== length(vec))
   mat / vec[row(mat)] # fastest
+}
+
+rowMutliply <- function(mat, vec) { # Mutliply by row
+  stopifnot(NROW(mat)== length(vec))
+  mat * vec[row(mat)] # fastest
 }
 
 sort.mat <- function(df, colname_in_df = 1, decrease = FALSE, na_last = TRUE) { # Sort a matrix. ALTERNATIVE: dd[with(dd, order(-z, b)), ]. Source: https://stackoverflow.com/questions/1296646/how-to-sort-a-dataframe-by-columns-in-r
@@ -1178,6 +1190,13 @@ flag.names_list <- function(par = p$'umap.min_dist') { # Returns the name and va
   if (length(par)) paste(substitute(par), kppu(par) , sep= "_")[[3]]
 };  # param.list.flag(par = p$umap.n_neighbors)
 
+
+flag.names_list.all.new <- function(pl = p.hm) { # Returns the name and value of each element in a list of parameters.
+  # if (length(pl)) paste(kppu(names(pl)), kppu(pl) , sep= "_")
+  if (length(pl)) kppd(paste(names(pl), pl, sep= "_"))
+}
+
+
 param.list.flag <- function(par = p$'umap.min_dist') { # Returns the name and value of each element in a list of parameters.
   paste(substitute(par), par, sep= "_")[[3]]
 };  # param.list.flag(par = p$umap.n_neighbors)
@@ -1467,7 +1486,6 @@ cumsubtract <- function(numericV=blanks) { # Cumulative subtraction, opposite of
   DiffZ
 }
 
-
 trail <- function(vec, N=10) c(head(vec, n = N), tail(vec, n = N) ) # A combination of head() and tail() to see both ends.
 
 sort.decreasing <- function(vec) sort(vec, decreasing = TRUE) # Sort in decreasing order.
@@ -1674,9 +1692,10 @@ link_bing <- function (vector_of_gene_symbols #  Parse bing search query links t
 
 # Biology ------------------------------------------------------------
 
-GC_content <- function(string, len=8) { # GC-content of a string (frequency of G and C letters among all letters).
-  tbl = table_fixed_categories(string, c("A", "T", "G", "C") )
-  sum(tbl[  c("G","C") ]) / sum(tbl)
+GC_content <- function(string, len=nchar(string), pattern = c("G","C")) { # GC-content of a string (frequency of G and C letters among all letters).
+  char.list <- stringr::str_split_fixed(string, pattern = "", n = nchar(string))
+  tbl = table (factor(unlist(char.list), levels = c("A", "T", "G", "C")))
+  sum(tbl[  pattern ]) / sum(tbl)
 }
 
 
@@ -1793,6 +1812,16 @@ PasteOutdirFromFlags <- function(path = "~/Dropbox/Abel.IMBA/AnalysisD", ...) { 
 
 
 
-
+# backup.obj <- function(obj) {
+#
+# }
 
 # TMP ------------------------------------------------------------------------------------------------
+
+
+AddTrailingSlash <- function(string = InputD) {#
+  LastChr <- substr(string, nchar(string), nchar(string))
+  if (!LastChr == "/")
+    string = paste0(string, "/")
+  return(string)
+}
