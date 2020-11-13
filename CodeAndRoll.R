@@ -72,7 +72,7 @@ say <- function(...) {system("say Ready")} # Use system voice to notify (after a
 sayy <- function(...) {system("say Ready to roll")} # Use system voice to notify (after a long task is done)
 
 
-grepv <- function (pattern, x, ignore.case = FALSE, perl = FALSE, value = FALSE, fixed = FALSE, useBytes = FALSE  # grep returning the value
+grepv <- function(pattern, x, ignore.case = FALSE, perl = FALSE, value = FALSE, fixed = FALSE, useBytes = FALSE  # grep returning the value
                    , invert = FALSE, ...) grep(pattern, x, ignore.case = ignore.case, perl = perl, fixed = fixed
                                                , useBytes = useBytes, invert = invert, ..., value = TRUE)
 
@@ -293,10 +293,10 @@ write_clip.replace.dot <- function(var=df.markers, decimal_mark = ',') { # Clipb
 
 ## Vector operations -------------------------------------------------------------------------------------------------
 
-sstrsplit <- function (string, pattern = "_", n = 2) { stringr::str_split_fixed  (string, pattern = pattern, n = n) } # Alias for str_split_fixed in the stringr package
+sstrsplit <- function(string, pattern = "_", n = 2) { stringr::str_split_fixed  (string, pattern = pattern, n = n) } # Alias for str_split_fixed in the stringr package
 
-topN.dfCol <- function (df_Col =as.named.vector(df[ , 1, drop=FALSE]), n=5)   { head(sort(df_Col, decreasing = TRUE), n=n) } # Find the n highest values in a named vector
-bottomN.dfCol <- function (df_Col = as.named.vector(df[ , 1, drop=FALSE]), n=5) { head(sort(df_Col, decreasing = FALSE), n=n) } # Find the n lowest values in a named vector
+topN.dfCol <- function(df_Col =as.named.vector(df[ , 1, drop=FALSE]), n=5)   { head(sort(df_Col, decreasing = TRUE), n=n) } # Find the n highest values in a named vector
+bottomN.dfCol <- function(df_Col = as.named.vector(df[ , 1, drop=FALSE]), n=5) { head(sort(df_Col, decreasing = FALSE), n=n) } # Find the n lowest values in a named vector
 
 
 as.named.vector <- function(df_col, WhichDimNames = 1) { # Convert a dataframe column or row into a vector, keeping the corresponding dimension name.
@@ -372,7 +372,7 @@ sortbyitsnames <- function(vec_or_list, decreasing=FALSE, ...) { # Sort a vector
   vec_or_list[order]
 }
 
-any.duplicated <- function (vec, summarize=TRUE){ # How many entries are duplicated
+any.duplicated <- function(vec, summarize=TRUE){ # How many entries are duplicated
   y=sum(duplicated(vec))
   if(summarize & y){
     x = table(vec); x= x[x>1]-1;
@@ -442,7 +442,7 @@ iterBy.over <- function(yourvec, by=9) { # Iterate over a vector by every N-th e
   lsX
 } # for (i in iterBy.over(yourvec = x)) { print(i) }
 
-zigzagger <- function (vec=1:9) { # mix entries so that they differ
+zigzagger <- function(vec=1:9) { # mix entries so that they differ
   intermingle2vec(vec, rev(vec))[1:length(vec)]
 }
 
@@ -708,7 +708,7 @@ getCols <- function(mat, colnamez, silent=FALSE, removeNAonly = FALSE, remove0on
   mat[ ,idx ]
 }
 
-get.oddoreven <- function (df_ = NULL, rows=FALSE, odd =TRUE){ # Get odd or even columns or rows of a data frame
+get.oddoreven <- function(df_ = NULL, rows=FALSE, odd =TRUE){ # Get odd or even columns or rows of a data frame
   counter = if(rows) NROW(df_) else NCOL(df_)
   IDX = if(odd) seq(1, to = counter, by = 2) else seq(2, to = counter, by = 2)
   df_out = if(rows) df_[IDX, ] else df_[, IDX]
@@ -834,11 +834,11 @@ any.duplicated.rownames.ls.of.df <- function(ls) any.duplicated(rownames(ls)) # 
 
 
 ## List operations -------------------------------------------------------------------------------------------------
-intersect.ls <- function (ls, ...){ Reduce(intersect, ls) } # Intersect any number of lists.
+intersect.ls <- function(ls, ...){ Reduce(intersect, ls) } # Intersect any number of lists.
 
-union.ls <- function (ls, ...){ sort(unique(do.call(c,ls))) } # Intersect any number of list elements. Faster than reduce.
+union.ls <- function(ls, ...){ sort(unique(do.call(c,ls))) } # Intersect any number of list elements. Faster than reduce.
 
-unlapply <- function (...) { unlist(lapply(...)) } # lapply, then unlist
+unlapply <- function(...) { unlist(lapply(...)) } # lapply, then unlist
 
 list.wNames <- function(...){ # create a list with names from ALL variables you pass on to the function
   lst = list(...)
@@ -1120,7 +1120,7 @@ lookup <- function(needle, haystack, exact =TRUE, report = FALSE) { # Awesome pa
 
 
 ## Colors -----------------------------------------------------------------------------------------------------
-richColors <- function (n=3) { gplots::rich.colors(n) } # Alias for rich.colors in gplots
+richColors <- function(n=3) { gplots::rich.colors(n) } # Alias for rich.colors in gplots
 
 
 Color_Check <- function(..., incrBottMarginBy=0, savefile = FALSE ) { # Display the colors encoded by the numbers / color-ID-s you pass on to this function
@@ -1139,7 +1139,7 @@ HeatMapCol_BGR <- grDevices::colorRampPalette(c("blue", "cyan", "yellow", "red")
 HeatMapCol_RedBlackGreen <- grDevices::colorRampPalette(c("red", "black", "green"), bias=1)
 
 ## Plotting and Graphics -----------------------------------------------------------------------------------------------------
-colSums.barplot <- function (df, col="seagreen2", na_rm =TRUE, ...) { barplot(colSums(df, na.rm = na_rm), col=col, ...) } # Draw a barplot from ColSums of a matrix.
+colSums.barplot <- function(df, col="seagreen2", na_rm =TRUE, ...) { barplot(colSums(df, na.rm = na_rm), col=col, ...) } # Draw a barplot from ColSums of a matrix.
 
 lm_equation_formatter <- function(lm) { # Renders the lm() function's output into a human readable text. (e.g. for subtitles)
   eq = signif(lm$coefficients);
@@ -1157,7 +1157,7 @@ lm_equation_formatter3 <- function(lm, y.var.name="y", x.var.name="x") { # Rende
   kollapse (y.var.name, "= ", eq[2], "*",x.var.name," ",plusSign,"", eq[1]);
 }
 
-hist.XbyY <- function (dfw2col = NULL, toSplit=1:100, splitby= rnorm(100), breaks_=20 ) { # Split a one variable by another. Calculates equal bins in splitby, and returns a list of the corresponding values in toSplit.
+hist.XbyY <- function(dfw2col = NULL, toSplit=1:100, splitby= rnorm(100), breaks_=20 ) { # Split a one variable by another. Calculates equal bins in splitby, and returns a list of the corresponding values in toSplit.
   # http://stackoverflow.com/questions/8853735/get-index-of-the-histogram-bin-in-r
   if(NCOL(dfw2col) ==2){ toSplit=dfw2col[ , 1]; splitby=dfw2col[ , 2]; print(11) }
   xx = hist(splitby, breaks = breaks_, plot = TRUE)
@@ -1428,14 +1428,14 @@ numerate <- function(x=1, y=100, zeropadding = TRUE, pad_length = floor( log10( 
 
 printEveryN <- function( i, N=1000) { if((i %% N) == 0 ) iprint(i) } # Report at every e.g. 1000
 
-# zigzagger <- function (vec=1:9) { new=vec; # mix entries so that they differ
+# zigzagger <- function(vec=1:9) { new=vec; # mix entries so that they differ
 #   mod = if (length(vec)%%2) 0 else 1
 #   for (i in 1:length(vec)) {   new[i] = if (i%%2) vec[i] else rev(vec)[i-mod] } ; return(new)
 # }
 
 
 
-irequire <- function (package) { package_ = as.character(substitute(package)); print(package_); # Load a package. If it does not exist, try to install it from CRAN.
+irequire <- function(package) { package_ = as.character(substitute(package)); print(package_); # Load a package. If it does not exist, try to install it from CRAN.
 if(!require(package = package_,  character.only = TRUE)) {
   print("Not Installed yet.");install.packages(pkgs = package_);
   Sys.sleep(1)
@@ -1453,7 +1453,7 @@ if(!require(package = package_,  character.only = TRUE)) {
 #' @export
 #' @examples IfExistsAndTrue()
 
-IfExistsAndTrue <- function (name="pi" ) { # Internal function. Checks if a variable is defined, and its value is TRUE.
+IfExistsAndTrue <- function(name="pi" ) { # Internal function. Checks if a variable is defined, and its value is TRUE.
   x=FALSE
   if (exists(name)) {
     if (isTRUE(get(name)))  {x =TRUE} else {x =FALSE; iprint(name, " exists, but != TRUE; ", get(name))}
@@ -1658,19 +1658,19 @@ memory.biggest.objects <- function(n=10) { # Show distribution of the largest ob
 # Search query links ------------------------------------------------------------------------
 
 # Google search URL / search query links
-b.dbl.writeOut =F
-b.dbl.Open =F
+# b.dbl.writeOut =F
+# b.dbl.Open =F
 
-link_google <- function (vector_of_gene_symbols #  Parse google search query links to your list of gene symbols. Strings "prefix" and ""suffix" will be searched for together with each gene ("Human ID4 neurons"). See many additional services in [DatabaseLinke.R](https://vertesy.github.io/DatabaseLinke.R/).
-                         ,google="http://www.google.com/search?as_q=", prefix ="", suffix =""
+link_google <- function(vector_of_gene_symbols #  Parse google search query links to your list of gene symbols. Strings "prefix" and ""suffix" will be searched for together with each gene ("Human ID4 neurons"). See many additional services in [DatabaseLinke.R](https://vertesy.github.io/DatabaseLinke.R/).
+                         , google="http://www.google.com/search?as_q=", prefix ="", suffix =""
                          , writeOut = b.dbl.writeOut, Open = b.dbl.Open, sleep=0) {
   links = paste0( google, prefix," ", vector_of_gene_symbols," ", suffix)
   if (writeOut) {
     bash_commands = paste0("open '", links, "'")
-    if (sleep>0) { bash_commands = paste0(bash_commands, ' ; sleep ', sleep) } # if wait
+    if (sleep > 0) { bash_commands = paste0(bash_commands, ' ; sleep ', sleep) } # if wait
     write.simple.append("", ManualName = BashScriptLocation)
     write.simple.append(bash_commands, ManualName = BashScriptLocation)
-  } else if (Open) { for (linkX in links) Sys.sleep(0.3+runif(1)); browseURL(linkX, encodeIfNeeded = T) } else { return(links) }
+  } else if (Open) { for (linkX in links) Sys.sleep(0.3 + runif(1)); browseURL(linkX, encodeIfNeeded = T) } else { return(links) }
 }
 
 
@@ -1678,16 +1678,16 @@ link_google <- function (vector_of_gene_symbols #  Parse google search query lin
 
 
 # Bing search URL / search query links
-link_bing <- function (vector_of_gene_symbols #  Parse bing search query links to your list of gene symbols. Strings "prefix" and ""suffix" will be searched for together with each gene ("Human ID4 neurons"). See many additional services in [DatabaseLinke.R](https://vertesy.github.io/DatabaseLinke.R/).
+link_bing <- function(vector_of_gene_symbols #  Parse bing search query links to your list of gene symbols. Strings "prefix" and ""suffix" will be searched for together with each gene ("Human ID4 neurons"). See many additional services in [DatabaseLinke.R](https://vertesy.github.io/DatabaseLinke.R/).
                        , bing="https://www.bing.com/search?q=", prefix ="", suffix =""
                        , writeOut = b.dbl.writeOut, Open = b.dbl.Open, sleep=0) {
   links = paste0( bing, prefix," ", vector_of_gene_symbols," ", suffix)
   if (writeOut) {
     bash_commands = paste0("open '", links, "'")
-    if (sleep>0) { bash_commands = paste0(bash_commands, ' ; sleep ', sleep) } # if wait
+    if (sleep > 0) { bash_commands = paste0(bash_commands, ' ; sleep ', sleep) } # if wait
     write.simple.append("", ManualName = BashScriptLocation)
     write.simple.append(bash_commands, ManualName = BashScriptLocation)
-  } else if (Open) { for (linkX in links) Sys.sleep(0.3+runif(1)); browseURL(linkX, encodeIfNeeded = T) } else { return(links) }
+  } else if (Open) { for (linkX in links) Sys.sleep(0.3 + runif(1)); browseURL(linkX, encodeIfNeeded = T) } else {return(links)}
 }
 
 # Biology ------------------------------------------------------------
@@ -1719,7 +1719,7 @@ GC_content <- function(string, len=nchar(string), pattern = c("G","C")) { # GC-c
 
 
 ### CONTAINS A QUICK FIX FOR THE NUMBER OF COLOR LEVELS. See #59 on GitHub ###
-val2col <- function (yourdata, # This function converts a vector of values("yourdata") to a vector of color levels. One must define the number of colors. The limits of the color scale("zlim") or the break points for the color changes("breaks") can also be defined. When breaks and zlim are defined, breaks overrides zlim.
+val2col <- function(yourdata, # This function converts a vector of values("yourdata") to a vector of color levels. One must define the number of colors. The limits of the color scale("zlim") or the break points for the color changes("breaks") can also be defined. When breaks and zlim are defined, breaks overrides zlim.
             zlim,
             col = rev(heat.colors(max(12, 3 * length(unique(yourdata))))),
             breaks,

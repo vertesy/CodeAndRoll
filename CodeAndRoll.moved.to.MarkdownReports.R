@@ -26,7 +26,7 @@
 
 
 # Moved to MarkdownReports
-# as.factor.numeric <- function (vec, rename=FALSE) { # Turn any vector into numeric categories as.numeric(as.factor(vec))
+# as.factor.numeric <- function(vec, rename=FALSE) { # Turn any vector into numeric categories as.numeric(as.factor(vec))
 #   vec2 = as.numeric(as.factor(vec)) ;
 #   names (vec2) =  if ( !rename & !is.null(names(vec) ) ) names (vec) else vec; return(vec2)
 #   }
@@ -45,7 +45,7 @@
 
 # ### 2017.12.12 FIX:   if (WriteOut) { write.simple.tsv(df, ManualName = paste0(substitute(df),".tsv")) }
 #
-# md.tableWriter.DF.w.dimnames <- function (df, FullPath = path_of_report, percentify = FALSE, title_of_table = NA, print2screen=FALSE, WriteOut =FALSE) {
+# md.tableWriter.DF.w.dimnames <- function(df, FullPath = path_of_report, percentify = FALSE, title_of_table = NA, print2screen=FALSE, WriteOut =FALSE) {
 #   if (is.na(title_of_table)) {    t = paste0(substitute(df), collapse = " ")
 #   } else {                        t = title_of_table  }
 #
@@ -79,7 +79,7 @@
 #
 
 # Moved to Markdownreports dev
-# md.List2Table <- function (parameterlist,
+# md.List2Table <- function(parameterlist,
 #                            title="List elements",
 #                            colname2="Value",
 #                            maxlen = 20) {

@@ -55,7 +55,7 @@ my_render <- function(input, encoding) { # For Rmarkdown to keep the markdown fi
 #' @param breaks1 break parameter for histogram function for the 2st list element.
 #' @param breaks2 break parameter for histogram function for the 2st list element.
 #' @param ... Pass any other parameter of the corresponding
-#' plotting function (most of them should work).
+#' plotting function(most of them should work).
 #' @param plotname The name of the file saved.
 #' @param main The title of the plot.
 #' @param ylab Y-axis label
@@ -175,7 +175,7 @@ whist.back2back <-
 #' @export
 #' @examples plot(2); corner.label.w("A")
 
-corner.label.w <- function (label = "A", # Add Legends to the corners. From the Plotrix package.
+corner.label.w <- function(label = "A", # Add Legends to the corners. From the Plotrix package.
             cex = 3,
             x = -1,
             y = 1,
@@ -224,7 +224,7 @@ corner.label.w <- function (label = "A", # Add Legends to the corners. From the 
 
 # TMP
 
-# create_set_OutDir <- function (..., setDir = TRUE) { # create set OutDir TMP for markdownreports
+# create_set_OutDir <- function(..., setDir = TRUE) { # create set OutDir TMP for markdownreports
 #   OutDir = kollapse(..., print = FALSE)
 #   if (!substrRight(OutDir, 1) == "/")
 #     OutDir = paste0(OutDir, "/") # add '/' if necessary
