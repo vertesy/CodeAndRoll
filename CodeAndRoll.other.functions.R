@@ -1,7 +1,7 @@
 ######################################################################
 # Less often used R functions from CodeAndRoll.R
 ######################################################################
-# source ('~/GitHub/CodeAndRoll/CodeAndRoll.other.functions.R')
+# source('/GitHub/Packages/CodeAndRoll/CodeAndRoll.other.functions.R')
 
 wA4 = 8.27 # A4 inches
 hA4 =11.69
