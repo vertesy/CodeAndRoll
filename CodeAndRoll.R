@@ -779,8 +779,8 @@ panel.cor.pearson <- function(x, y, digits=2, prefix="", cex.cor=2, method = "pe
   usr <- par("usr"); on.exit(par(usr))
   par(usr = c(0, 1, 0, 1))
   r <- abs(cor(x, y, method = method, use = "complete.obs"))
-  txt <- format(c(r, 0.123456789), digits=digits)[1]
-  txt <- paste(prefix, txt, sep="")
+  txt <- format(c(r, 0.123456789), digits = digits)[1]
+  txt <- paste(prefix, txt, sep = "")
   if(missing(cex.cor)) cex <- 0.8/strwidth(txt)
 
   test <- cor.test(x, y)
@@ -789,15 +789,15 @@ panel.cor.pearson <- function(x, y, digits=2, prefix="", cex.cor=2, method = "pe
                    symbols = c("***", "**", "*", ".", " "))
 
   text(0.5, 0.5, txt, cex = cex * r)
-  text(.8, .8, Signif, cex=cex, col=2)
+  text(.8, .8, Signif, cex = cex,  col=2)
 }
 
 panel.cor.spearman <- function(x, y, digits=2, prefix="", cex.cor=2, method = "spearman") { # A function to display correlation values for pairs() function. Default is pearson correlation, that can be set to  "kendall" or "spearman".
   usr <- par("usr"); on.exit(par(usr))
   par(usr = c(0, 1, 0, 1))
   r <- abs(cor(x, y, method = method, use = "complete.obs"))
-  txt <- format(c(r, 0.123456789), digits=digits)[1]
-  txt <- paste(prefix, txt, sep="")
+  txt <- format(c(r, 0.123456789), digits = digits)[1]
+  txt <- paste(prefix, txt, sep = "")
   if(missing(cex.cor)) cex <- 0.8/strwidth(txt)
 
   test <- cor.test(x, y)
@@ -806,7 +806,7 @@ panel.cor.spearman <- function(x, y, digits=2, prefix="", cex.cor=2, method = "s
                    symbols = c("***", "**", "*", ".", " "))
 
   text(0.5, 0.5, txt, cex = cex * r)
-  text(.8, .8, Signif, cex=cex, col=2)
+  text(.8, .8, Signif, cex = cex, col = 2)
 }
 
 
@@ -822,8 +822,8 @@ remove.na.cols <- function(mat) { # cols have to be a vector of numbers correspo
 }
 
 na.omit.mat <- function(mat, any = TRUE) { # Omit rows with NA values from a matrix. Rows with any, or full of NA-s
-  mat=as.matrix(mat)
-  stopifnot(length(dim(mat))==2)
+  mat = as.matrix(mat)
+  stopifnot(length(dim(mat)) == 2)
   if (any) outMat = mat[ !is.na(rowSums(mat)), ]
   else outMat = mat[ (rowSums(is.na(mat)) <= ncol(mat)), ] # keep rows not full with NA
   outMat
@@ -856,7 +856,7 @@ as.list.df.by.row <- function(dtf, na.omit =TRUE, zero.omit =FALSE, omit.empty =
 }
 
 as.list.df.by.col <- function(dtf, na.omit =TRUE, zero.omit =FALSE, omit.empty = FALSE) { # oSplit a dataframe into a list by its rows. omit.empty for the listelments; na.omit and zero.omit are applied on entries inside each list element.
-  outList = as.list(dtf )
+  outList = as.list(dtf)
   if (na.omit){   outList =  lapply(outList, na.omit.strip) }
   if (zero.omit){   outList =  lapply(outList, zero.omit) }
   if (omit.empty) {   outList = outList[(lapply(outList, length))>0] }
@@ -872,7 +872,7 @@ reorder.list <- function(L, namesOrdered=mixedsort(names(L))) { # reorder elemen
 }
 
 range.list <- function(L, namesOrdered) { # range of values in whole list
-  return(range(unlist(L), na.rm=TRUE))
+  return(range(unlist(L), na.rm = TRUE))
 }
 
 intermingle2lists <- function(L1, L2) { # Combine 2 lists (of the same length) so that form every odd and every even element of a unified list. Useful for side-by-side comparisons, e.g. in wstripchart_list().
@@ -917,8 +917,10 @@ reverse.list.hierarchy <- function(ll) { # reverse list hierarchy
 #' @export
 #' @examples list2fullDF.byNames()
 
-list2fullDF.byNames <- function(your.list=list( "set.1" = vec.fromNames(LETTERS[1:5], values = 1)  # Convert a list to a full matrix. Rows = names(union.ls(your_list)) or all names of within list elements, columns = names(your_list).
-  , "set.2" = vec.fromNames(LETTERS[3:9], values = 2)), byRow=TRUE, FILL=NA){
+list2fullDF.byNames <- function(your.list=list(
+  "set.1" = vec.fromNames(LETTERS[1:5], fill = 1),  # Convert a list to a full matrix. Rows = names(union.ls(your_list)) or all names of within list elements, columns = names(your_list).
+  "set.2" = vec.fromNames(LETTERS[3:9], fill = 2)
+  ), byRow=TRUE, FILL=NA){
   length.list = length(your.list)
   list.names = names(your.list)
   list.element.names = sort(unique(unlist(lapply(your.list, names))))
