@@ -28,7 +28,7 @@ wPairConnector <- function(DFrn=A3, PairAnnot=Sisters, verbose=FALSE, addlabels=
     segments( DFrn[ P[1], 1], DFrn[ P[1], 2],
               DFrn[ P[2], 1], DFrn[ P[2], 2], ...)
   } #for
-  if(addlabels)  text( DFrn, labels = Sisters[RN], srt=65, cex=.75, pos=4)
+  if (addlabels)  text( DFrn, labels = Sisters[RN], srt=65, cex=.75, pos=4)
 }
 
 

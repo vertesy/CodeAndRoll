@@ -17,7 +17,7 @@
 #   fname = kollapse (..., print = FALSE); if (nchar (fname) < 2 ) { fname = substitute(input_df) }
 #   if (nchar(ManualName)) {FnP = kollapse(ManualName)} else  { FnP = ww.FnP_parser (fname, extension) }
 #   write.table (input_df, file = FnP, sep = "\t", row.names = TRUE, col.names = NA, quote=FALSE  )
-#   printme = if(length(dim(input_df))) paste0("Dim: ", dim(input_df) ) else paste0("Length (of your vector): ", length(input_df) )
+#   printme = if (length(dim(input_df))) paste0("Dim: ", dim(input_df) ) else paste0("Length (of your vector): ", length(input_df) )
 #   iprint (printme)
 #   if (o) { system(paste0("open ", FnP), wait = FALSE) }
 #   if (gzip) { system(paste0("gzip ", FnP), wait = FALSE) }

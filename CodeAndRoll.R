@@ -82,7 +82,7 @@ oo <- function() { # Open current working directory.
 
 # detach_package <-
 unload <- function(pkg, character.only = FALSE) { # Unload a package. Source: https://stackoverflow.com/questions/6979917/how-to-unload-a-package-without-restarting-r
-  if(!character.only)
+  if (!character.only)
   {
     pkg <- deparse(substitute(pkg))
   }
@@ -128,7 +128,7 @@ read.simple.table <- function(..., colnames=TRUE, coltypes=NULL) { # Read in a f
 FirstCol2RowNames <- function(Tibble, rownamecol=1, make_names=FALSE) { # Set First Col to Row Names
   Tibble =  as.data.frame(Tibble)
   NN =Tibble[[rownamecol]]
-  rownames(Tibble) = if(make_names) make.names(NN, unique = TRUE) else NN
+  rownames(Tibble) = if (make_names) make.names(NN, unique = TRUE) else NN
   return(Tibble[, -rownamecol, drop=F])
 }
 
@@ -183,7 +183,7 @@ convert.tsv.data <- function(df_by_read.simple.tsv=x, digitz=2, na_rep=0 ) { # F
 'Look into: http://readxl.tidyverse.org/'
 read.simple.xls <- function(pfn = kollapse(...), row_namePos=NULL, ..., header_ = TRUE, WhichSheets) { # Read multi-sheet excel files. row_namePos = NULL for automatic names
   if (!require("gdata")) { print("Please install gplots: install.packages('gdata')") }
-  if(grepl("^~/", pfn)) {
+  if (grepl("^~/", pfn)) {
     iprint("You cannot use the ~/ in the file path! It is replaced by '/Users/abel.vertesy/'.")
     pfn = gsub(pattern = "^~/", replacement = "/Users/abel.vertesy/", x = pfn)
   } else {print(pfn)}
@@ -194,7 +194,7 @@ read.simple.xls <- function(pfn = kollapse(...), row_namePos=NULL, ..., header_ 
   NrSheets = length(TheSheetNames)
   iprint(NrSheets, "sheets in the file.")
   ExpData = list.fromNames(TheSheetNames)
-  RangeOfSheets = if(missing(WhichSheets)) 1:NrSheets else WhichSheets
+  RangeOfSheets = if (missing(WhichSheets)) 1:NrSheets else WhichSheets
   for (i in RangeOfSheets ) {
     iprint("sheet", i)
     ExpData[[i]] = gdata::read.xls(pfn, sheet = i, row.names=row_namePos, header = header_)
@@ -333,21 +333,21 @@ as.numeric.wNames <- function(vec) { # Converts any vector into a numeric vector
 
 as.numeric.wNames.old <- function(vec) { # Converts any vector into a numeric vector, and puts the original character values into the names of the new vector, unless it already has names. Useful for coloring a plot by categories, name-tags, etc.
   numerified_vec = as.numeric(as.factor(vec))
-  if (!is.null(names(vec))) {names (numerified_vec) = names (vec)}
+  if (!is.null(names(vec))) {names(numerified_vec) = names(vec)}
   return(numerified_vec)
 }
 
 as.character.wNames <- function(vec) { # Converts your input vector into a character vector, and puts the original character values into the names of the new vector, unless it already has names.
   char_vec = as.character(vec)
-  if (!is.null(names(vec))) {names (char_vec) = names (vec)}
+  if (!is.null(names(vec))) {names(char_vec) = names(vec)}
   return(char_vec)
 }
 
 rescale <- function(vec, from=0, upto=100) { # linear transformation to a given range of values
-  vec = vec-min(vec, na.rm = TRUE)
-  vec = vec*((upto-from)/max(vec, na.rm = TRUE))
-  vec = vec+ from
-  return (vec)
+  vec = vec - min(vec, na.rm = TRUE)
+  vec = vec * ((upto - from)/max(vec, na.rm = TRUE))
+  vec = vec + from
+  return(vec)
 } # fun
 
 flip_value2name <- function(named_vector, NumericNames =FALSE, silent = F) { # Flip the values and the names of a vector with names
@@ -374,7 +374,7 @@ sortbyitsnames <- function(vec_or_list, decreasing=FALSE, ...) { # Sort a vector
 
 any.duplicated <- function(vec, summarize=TRUE){ # How many entries are duplicated
   y=sum(duplicated(vec))
-  if(summarize & y){
+  if (summarize & y){
     x = table(vec); x= x[x>1]-1;
     print("The following elements have >1 extra copies:")
     print(x) # table formatting requires a separate entry
@@ -424,11 +424,11 @@ clip.outliers <- function(valz, high=TRUE, probs = c(.01, .99), na.rm = TRUE, sh
 
 as.logical.wNames <- function(x, ...) { # Converts your input vector into a logical vector, and puts the original character values into the names of the new vector, unless it already has names.
   numerified_vec = as.logical(x, ...)
-  if (!is.null(names(x))) {names (numerified_vec) = names (x)}
+  if (!is.null(names(x))) {names(numerified_vec) = names(x)}
   return(numerified_vec)
 }
 
-col2named.vec.tbl <- function(tbl.2col) { # Convert a 2-column table (data frame) into a named vector. 1st column will be used as names.
+col2named.vec.tbl <- function(tbl.2col) { # Convert a 2-column table(data frame) into a named vector. 1st column will be used as names.
   nvec = tbl.2col[[2]]
   names(nvec) = tbl.2col[[1]]
   nvec
@@ -476,9 +476,9 @@ inf.omit <- function(vec) { # Omit infinite values from a vector.
 }
 
 zero.omit <- function(vec) { # Omit zero values from a vector.
-  v2= vec[vec!=0]
+  v2 = vec[vec != 0]
   iprint("range: ", range(v2))
-  if ( !is.null(names(vec)) ) {names(v2) = names(vec)[vec!=0]}
+  if ( !is.null(names(vec)) ) {names(v2) = names(vec)[vec != 0]}
   return(v2)
 }
 
@@ -486,15 +486,15 @@ pc_TRUE <- function(logical_vector, percentify =TRUE, NumberAndPC=FALSE, NArm=TR
   SUM = sum(logical_vector, na.rm = NArm)
   LEN = length(logical_vector)
   out = SUM / LEN
-  if (percentify) {out = percentage_formatter (out) }
+  if (percentify) {out = percentage_formatter(out) }
   if (NumberAndPC) { out = paste0(out, " or " , SUM, " of ", LEN) }
   return(out)
 }
 
 # deprecated :
 NrAndPc <- function(logical_vec=idx_localised, total=TRUE, NArm=TRUE) { # Summary stat. text formatting for logical vectors (%, length)
-  x=paste0(pc_TRUE(logical_vec), " or ", sum(logical_vec, na.rm = NArm))
-  if(total) paste0(x, " of ", length(logical_vec))
+  x = paste0(pc_TRUE(logical_vec), " or ", sum(logical_vec, na.rm = NArm))
+  if (total) paste0(x, " of ", length(logical_vec))
 }
 
 
@@ -709,9 +709,9 @@ getCols <- function(mat, colnamez, silent=FALSE, removeNAonly = FALSE, remove0on
 }
 
 get.oddoreven <- function(df_ = NULL, rows=FALSE, odd =TRUE){ # Get odd or even columns or rows of a data frame
-  counter = if(rows) NROW(df_) else NCOL(df_)
-  IDX = if(odd) seq(1, to = counter, by = 2) else seq(2, to = counter, by = 2)
-  df_out = if(rows) df_[IDX, ] else df_[, IDX]
+  counter = if (rows) NROW(df_) else NCOL(df_)
+  IDX = if (odd) seq(1, to = counter, by = 2) else seq(2, to = counter, by = 2)
+  df_out = if (rows) df_[IDX, ] else df_[, IDX]
   return(df_out)
 }
 
@@ -763,7 +763,7 @@ merge_numeric_df_by_rn <- function(x, y) { # Merge 2 numeric data frames by rown
 
 attach_w_rownames <- function(df_w_dimnames, removePreviousVariables = FALSE) { # Take a data frame (of e.g. metadata) from your memory space, split it into vectors so you can directly use them. E.g.: Instead of metadata$color[blabla] use color[blabla]
   if (removePreviousVariables) { rm(list = colnames(df_w_dimnames), envir = .GlobalEnv); print("removed") }
-  if(!is.null(rownames(df_w_dimnames)) & !is.null(colnames(df_w_dimnames))) {
+  if (!is.null(rownames(df_w_dimnames)) & !is.null(colnames(df_w_dimnames))) {
     namez= rownames(df_w_dimnames)
     iprint("Now directly available in the workspace:      ", colnames(df_w_dimnames))
     attach (df_w_dimnames)
@@ -781,7 +781,7 @@ panel.cor.pearson <- function(x, y, digits=2, prefix="", cex.cor=2, method = "pe
   r <- abs(cor(x, y, method = method, use = "complete.obs"))
   txt <- format(c(r, 0.123456789), digits = digits)[1]
   txt <- paste(prefix, txt, sep = "")
-  if(missing(cex.cor)) cex <- 0.8/strwidth(txt)
+  if (missing(cex.cor)) cex <- 0.8/strwidth(txt)
 
   test <- cor.test(x, y)
   Signif <- symnum(test$p.value, corr = FALSE, na = FALSE,
@@ -798,7 +798,7 @@ panel.cor.spearman <- function(x, y, digits=2, prefix="", cex.cor=2, method = "s
   r <- abs(cor(x, y, method = method, use = "complete.obs"))
   txt <- format(c(r, 0.123456789), digits = digits)[1]
   txt <- paste(prefix, txt, sep = "")
-  if(missing(cex.cor)) cex <- 0.8/strwidth(txt)
+  if (missing(cex.cor)) cex <- 0.8/strwidth(txt)
 
   test <- cor.test(x, y)
   Signif <- symnum(test$p.value, corr = FALSE, na = FALSE,
@@ -867,7 +867,7 @@ as.list.df.by.col <- function(dtf, na.omit =TRUE, zero.omit =FALSE, omit.empty =
 reorder.list <- function(L, namesOrdered=mixedsort(names(L))) { # reorder elements of lists in your custom order of names / indices.
   Lout = list(NA)
   for (x in 1:length(namesOrdered)) { Lout[[x]] = L[[namesOrdered[x] ]]  }
-  if(length(names(L))) { names(Lout) = namesOrdered }
+  if (length(names(L))) { names(Lout) = namesOrdered }
   return (Lout)
 }
 
@@ -888,7 +888,7 @@ intermingle2lists <- function(L1, L2) { # Combine 2 lists (of the same length) s
 as.listalike <- function(vec, list_wannabe) { # convert a vector to a list with certain dimensions, taken from the list it wanna resemble
   stopifnot(length(vec) == length(unlist(list_wannabe)))
   list_return = list_wannabe
-  past =0
+  past = 0
   for (v in 1:length (list_wannabe)) {
     lv = length (list_wannabe[[v]])
     list_return[[v]] = vec[(past+1):(past+lv)]
@@ -930,7 +930,7 @@ list2fullDF.byNames <- function(your.list=list(
     element = list.names[i]
     mat[ names(your.list[[element]]), element] = your.list[[element]]
   }
-  if(!byRow) {mat = t(mat)}
+  if (!byRow) {mat = t(mat)}
   return(mat)
 }
 
@@ -943,8 +943,8 @@ list2fullDF.byNames <- function(your.list=list(
 #' @export
 #' @examples list2fullDF.presence()
 
-list2fullDF.presence <- function(your.list=list("set.1"=LETTERS[1:5]  # Convert a list to a full matrix.  Designed for occurence counting, think tof table(). Rows = all ENTRIES of within your list, columns = names(your_list).
-  , "set.2"=LETTERS[3:9]), byRow=TRUE, FILL=0){
+list2fullDF.presence <- function(your.list=list("set.1" = LETTERS[1:5]  # Convert a list to a full matrix.  Designed for occurence counting, think tof table(). Rows = all ENTRIES of within your list, columns = names(your_list).
+                                                , "set.2" = LETTERS[3:9]), byRow = TRUE, FILL = 0){
   length.list = length(your.list)
   list.names = names(your.list)
   list.elements = sort(Reduce(f = union, your.list))
@@ -954,7 +954,7 @@ list2fullDF.presence <- function(your.list=list("set.1"=LETTERS[1:5]  # Convert 
     element = list.names[i]
     mat[ your.list[[element]], element] = 1
   }
-  if(!byRow) {mat = t(mat)}
+  if (!byRow) {mat = t(mat)}
   return(mat)
 }
 
@@ -971,7 +971,7 @@ splititsnames_byValues <- function(namedVec){ # split a list by its names
 intermingle2vec <- function(V1, V2, wNames=TRUE) { # Combine 2 vectors (of the same length) so that form every odd and every even element of a unified vector.
   stopifnot(length(V1) == length(V2) )
   Vout  = c(rbind(V1, V2))
-  if(wNames) {names(Vout) = c(rbind(names(V1), names(V2)))}
+  if (wNames) {names(Vout) = c(rbind(names(V1), names(V2)))}
   return(Vout)
 }
 
@@ -979,7 +979,7 @@ intermingle2vec <- function(V1, V2, wNames=TRUE) { # Combine 2 vectors (of the s
 
 intermingle.cbind <- function(df1, df2) { # Combine 2 data frames (of the same length) so that form every odd and every even element of a unified list. Useful for side-by-side comparisons, e.g. in wstripchart_list().
   stopifnot(ncol(df1) == ncol(df2) )
-  if(nrow(df1) != nrow(df2) ){ # not equal rows: subset
+  if (nrow(df1) != nrow(df2) ){ # not equal rows: subset
     print(symdiff(rownames(df2), rownames(df1)))
     CommonGenes = intersect(rownames(df2), rownames(df1)); print(length(CommonGenes))
     df1=df1[CommonGenes, ]
@@ -1155,13 +1155,13 @@ lm_equation_formatter2 <- function(lm) { # Renders the lm() function's output in
 
 lm_equation_formatter3 <- function(lm, y.var.name="y", x.var.name="x") { # Renders the lm() function's output into a human readable text. (e.g. for subtitles)
   eq = signif(lm$coefficients, digits = 3);
-  plusSign = if(sign(eq[1]==1)) "" else "-"
+  plusSign = if (sign(eq[1]==1)) "" else "-"
   kollapse (y.var.name, "= ", eq[2], "*",x.var.name," ",plusSign,"", eq[1]);
 }
 
 hist.XbyY <- function(dfw2col = NULL, toSplit=1:100, splitby= rnorm(100), breaks_=20 ) { # Split a one variable by another. Calculates equal bins in splitby, and returns a list of the corresponding values in toSplit.
   # http://stackoverflow.com/questions/8853735/get-index-of-the-histogram-bin-in-r
-  if(NCOL(dfw2col) ==2){ toSplit=dfw2col[ , 1]; splitby=dfw2col[ , 2]; print(11) }
+  if (NCOL(dfw2col) ==2){ toSplit=dfw2col[ , 1]; splitby=dfw2col[ , 2]; print(11) }
   xx = hist(splitby, breaks = breaks_, plot = TRUE)
   IDX = findInterval(x = splitby, vec = xx$breaks)
   ls = split(toSplit, IDX)
@@ -1215,8 +1215,8 @@ quantile_breaks <- function(xs, n = 10, na.Rm=FALSE) { # Quantile breakpoints in
 
 vec.fromNames <- function(name_vec=LETTERS[1:5], fill=NA) { # create a vector from a vector of names
   v=numeric(length(name_vec))
-  if(length(fill)==1) {v=rep(fill, length(name_vec))}
-  else if(length(fill==length(name_vec))) {v=fill}
+  if (length(fill)==1) {v=rep(fill, length(name_vec))}
+  else if (length(fill==length(name_vec))) {v=fill}
   names(v)=name_vec
   return(v)
 }
@@ -1282,7 +1282,7 @@ table_fixed_categories <- function(vector, categories_vec) { # generate a table(
 ## Generic -------------------------------------------------------------------------------------------------
 
 
-stopif2 <- function(condition, ...) { if(condition) {iprint (...); stop()} } # Stop script if the condition is met. You can parse anything (e.g. variables) in the message
+stopif2 <- function(condition, ...) { if (condition) {iprint (...); stop()} } # Stop script if the condition is met. You can parse anything (e.g. variables) in the message
 
 most_frequent_elements <- function(thingy, topN=10) { # Show the most frequent elements of a table
   tail(sort(table(thingy, useNA = "ifany")), topN)
@@ -1322,7 +1322,7 @@ hclust.ClusterSeparatingLines.col <- function(pheatmapObject, k=3) which(!duplic
 
 Gap.Postions.calc.pheatmap <- function(annot.vec.of.categories) { # calculate gap positions for pheatmap, based a sorted annotation vector of categories
   NAZ = sum(is.na(annot.vec.of.categories))
-  if(NAZ) iprint("There are", NAZ, "NA values in your vector. They should be last and they are omitted.")
+  if (NAZ) iprint("There are", NAZ, "NA values in your vector. They should be last and they are omitted.")
   consecutive.lengthes = rle( na.omit.strip(annot.vec.of.categories))$lengths
   cumsum(consecutive.lengthes) # return abs.positions
 }
@@ -1357,7 +1357,7 @@ annot_col.create.pheatmap.df <- function(data, annot_df_per_column, annot_names=
   stopif( dim(annot_df_per_column)[1] != dim(data)[2] , message = "The number of rows in the annotation data != to the # columns in your data frame")
 
   df = as.data.frame(annot_df_per_column)
-  if(any(rownames(df) != colnames(data))) { print ("The rownames of annot_df_per_column are not the same as the colnames of data:")
+  if (any(rownames(df) != colnames(data))) { print ("The rownames of annot_df_per_column are not the same as the colnames of data:")
     print(cbind("rownames(df)" = rownames(df) , "colnames(data)" = colnames(data))) }
   namez = as.character (if (is.null(annot_names)) colnames(annot_df_per_column) else annot_names)
 
@@ -1394,7 +1394,7 @@ annot_row.create.pheatmap.df <- function(data, annot_df_per_row, annot_names=NUL
   stopif( dim(annot_df_per_row)[1] != dim(data)[1] , message = "The number of rows in the annotation data != to the # columns in your data frame")
 
   df = as.data.frame(annot_df_per_row)
-  if(any(rownames(df) != rownames(data))) { print ("The rownames of annot_df_per_row are not the same as the rownames of data:")
+  if (any(rownames(df) != rownames(data))) { print ("The rownames of annot_df_per_row are not the same as the rownames of data:")
     print(cbind("rownames(df)" = rownames(df) , "rownames(data)" = rownames(data))) }
   namez = as.character (if (is.null(annot_names)) colnames(annot_df_per_row) else annot_names)
 
@@ -1423,12 +1423,12 @@ annot_row.create.pheatmap.df <- function(data, annot_df_per_row, annot_names=NUL
 
 numerate <- function(x=1, y=100, zeropadding = TRUE, pad_length = floor( log10( max(abs(x), abs(y)) ) )+1) { # numerate from x to y with additonal zeropadding
   z = x:y
-  if(zeropadding){ z =stringr::str_pad(z, pad = 0, width = pad_length)   }
+  if (zeropadding){ z =stringr::str_pad(z, pad = 0, width = pad_length)   }
   return(z)
 }
 # toClipboard(numerate(1, 122))
 
-printEveryN <- function( i, N=1000) { if((i %% N) == 0 ) iprint(i) } # Report at every e.g. 1000
+printEveryN <- function(i, N=1000) { if ((i %% N) == 0 ) iprint(i) } # Report at every e.g. 1000
 
 # zigzagger <- function(vec=1:9) { new=vec; # mix entries so that they differ
 #   mod = if (length(vec)%%2) 0 else 1
@@ -1438,7 +1438,7 @@ printEveryN <- function( i, N=1000) { if((i %% N) == 0 ) iprint(i) } # Report at
 
 
 irequire <- function(package) { package_ = as.character(substitute(package)); print(package_); # Load a package. If it does not exist, try to install it from CRAN.
-if(!require(package = package_,  character.only = TRUE)) {
+if (!require(package = package_,  character.only = TRUE)) {
   print("Not Installed yet.");install.packages(pkgs = package_);
   Sys.sleep(1)
   print("Loading package:")
@@ -1470,7 +1470,7 @@ filter_InCircle <- function(df2col = cbind(rnorm(100),rnorm(100)) # Find points 
   if (center =="mean") { x = mean(xi); y = mean(yi)
   } else if (center =="median") { x = median(xi);  y = median(yi)
   } else if  (length(center) ==2) { x = center[1]; y = center[1] }
-  side  = if(inside) "inside" else "outside"
+  side  = if (inside) "inside" else "outside"
   PASS =  if (inside) ((xi-x)**2 + (yi-y)**2 < r**2) else ((xi-x)**2 + (yi-y)**2 > r**2)
   PASSTXT = paste0(pc_TRUE(PASS, NumberAndPC = TRUE), " points are ", side," the circle.")
   iprint(PASSTXT)
