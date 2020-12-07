@@ -68,8 +68,17 @@ kpps <- function(...) { paste(..., sep = '/', collapse = '/') } # kollapse by (f
 kppd <- function(...) { paste(..., sep = '-', collapse = '-') } # kollapse by dash
 
 stry <- function(...) {try(..., silent = T)} # Silent try
-say <- function(...) {system("say Ready")} # Use system voice to notify (after a long task is done)
+
+say <- function(...) { # Use system voice to notify (after a long task is done)
+  sys <- Sys.info()["sysname"]
+  if (sys == "Darwin") system("say Ready")
+  if (sys == "Linux") system("echo -e '\a'; sleep 0.5s; echo -e '\a'; sleep 0.5s; echo -e '\a'; sleep 0.5s; echo -e '\a'; sleep 0.5s; echo -e '\a'; sleep 0.5s; echo -e '\a'")  # For UNIX servers.
+}
 sayy <- function(...) {system("say Ready to roll")} # Use system voice to notify (after a long task is done)
+
+
+
+
 
 
 grepv <- function(pattern, x, ignore.case = FALSE, perl = FALSE, value = FALSE, fixed = FALSE, useBytes = FALSE  # grep returning the value
@@ -1299,6 +1308,7 @@ percentile2value <- function(distribution, percentile = 0.95, FirstValOverPercen
   value = sort(distribution)[index]
   return (value)
 }
+
 
 MaxN <- function(vec=rpois(4, lambda = 3), topN=2) { # find second (third…) highest/lowest value in vector
   topN = topN-1
