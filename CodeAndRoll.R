@@ -567,13 +567,13 @@ any.duplicated <- function(vec, summarize = TRUE) { # How many entries are dupli
   return(y)
 }
 
-which.duplicated <- function(vec, orig = F) { # orig = rownames(sc@expdata)
+which.duplicated <- function(vec, orig = F) { # which values are duplicated?
   DPL = vec[which(duplicated(vec))]; iprint(length(DPL), "Duplicated entries: ", DPL)
   # for (i in DPL ) {   print(grepv(i,orig)) } #for
   return(DPL)
 }
 
-which.NA <- function(vec, orig = F) { # orig = rownames(sc@expdata)
+which.NA <- function(vec, orig = F) { # which values are NA?
   NANs = vec[which(is.na(vec))]; iprint(length(NANs), "NaN entries: ", NANs)
   NAs = vec[which(is.na(vec))]; iprint(length(NAs), "NA entries: ", NAs, "(only NA-s are returned)")
   # for (i in DPL ) {   print(grepv(i,orig)) } #for
