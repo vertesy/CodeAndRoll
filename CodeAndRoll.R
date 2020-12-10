@@ -1706,17 +1706,23 @@ GC_content <- function(string, len = nchar(string), pattern = c("G","C")) { # GC
 # TMP ------------------------------------------------------------------------------------------------
 
 
+
 sourceGitHub <- function(script = "Cell.cycle.scoring.R"
                          , repo = "Seurat.Pipeline"
-                         , folder = "elements"
+                         , folder = c(NULL, "elements")[2]
                          , user = "vertesy"
                          , rawpath = "https://raw.githubusercontent.com"
-                         , suffix = "main"
-                         , token = F, ...) { # Source from GitHub. Example https://raw.githubusercontent.com/vertesy/Seurat.Pipeline/main/elements/Cell.cycle.scoring.R
-  fullpath = kpps(rawpath, user, repo, suffix, folder, script)
-  if (!isFALSE(token)) fullpath = kpps(fullpath, token)
+                         , suffix = "master"
+                         , token = NULL, ...) { # Source from GitHub. Example https://raw.githubusercontent.com/vertesy/Seurat.Pipeline/main/elements/Cell.cycle.scoring.R
+  path.part = FixPath(kpps(user, repo, suffix, folder, script))
+  fullpath = RemoveFinalSlash(kpps(rawpath, path.part))
+  if (!is.null(token)) fullpath = p0(fullpath, token)
   print(fullpath)
   source(fullpath)
 }
 # sourceGitHub(script = , repo = "Seurat.Pipeline", folder = "elements" )
+
+RemoveFinalSlash <- function(string = "stairway/to/heaven/") { #
+  gsub(x = string, pattern = '/$', replacement = '')
+}
 
