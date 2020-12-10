@@ -1709,7 +1709,7 @@ GC_content <- function(string, len = nchar(string), pattern = c("G","C")) { # GC
 
 sourceGitHub <- function(script = "Cell.cycle.scoring.R"
                          , repo = "Seurat.Pipeline"
-                         , folder = c(NULL, "elements")[2]
+                         , folder = "elements"
                          , user = "vertesy"
                          , rawpath = "https://raw.githubusercontent.com"
                          , suffix = "master"
