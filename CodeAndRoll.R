@@ -1705,3 +1705,18 @@ GC_content <- function(string, len = nchar(string), pattern = c("G","C")) { # GC
 
 # TMP ------------------------------------------------------------------------------------------------
 
+
+sourceGitHub <- function(script = "Cell.cycle.scoring.R"
+                         , repo = "Seurat.Pipeline"
+                         , folder = "elements"
+                         , user = "vertesy"
+                         , rawpath = "https://raw.githubusercontent.com"
+                         , suffix = "main"
+                         , token = F, ...) { # Source from GitHub. Example https://raw.githubusercontent.com/vertesy/Seurat.Pipeline/main/elements/Cell.cycle.scoring.R
+  fullpath = kpps(rawpath, user, repo, suffix, folder, script)
+  if (!isFALSE(token)) fullpath = kpps(fullpath, token)
+  print(fullpath)
+  source(fullpath)
+}
+# sourceGitHub(script = , repo = "Seurat.Pipeline", folder = "elements" )
+
