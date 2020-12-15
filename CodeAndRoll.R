@@ -1721,8 +1721,8 @@ sourceGitHub <- function(script = "Cell.cycle.scoring.R"
   source(fullpath)
 }
 # sourceGitHub(script = , repo = "Seurat.Pipeline", folder = "elements" )
-
-RemoveFinalSlash <- function(string = "stairway/to/heaven/") { #
-  gsub(x = string, pattern = '/$', replacement = '')
-}
-
+#
+# RemoveFinalSlash <- function(string = "stairway/to/heaven/") { #
+#   gsub(x = string, pattern = '/$', replacement = '')
+# }
+#
