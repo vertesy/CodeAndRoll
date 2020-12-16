@@ -847,6 +847,7 @@ colMedians <- function(x, na.rm = TRUE) apply(data.matrix(x), 2, median, na.rm =
 rowGeoMeans <- function(x, na.rm = TRUE) apply(data.matrix(x), 1, geomean, na.rm = na.rm) # Calculates the median of each row of a numeric matrix / data frame.
 colGeoMeans <- function(x, na.rm = TRUE) apply(data.matrix(x), 2, geomean, na.rm = na.rm) # Calculates the median of each column of a numeric matrix / data frame.
 
+# depend on cv in MarkdownReports
 rowCV <- function(x, na.rm = TRUE) apply(data.matrix(x), 1, cv, na.rm = na.rm ) # Calculates the CV of each ROW of a numeric matrix / data frame.
 colCV <- function(x, na.rm = TRUE) apply(data.matrix(x), 2, cv, na.rm = na.rm ) # Calculates the CV of each column of a numeric matrix / data frame.
 
