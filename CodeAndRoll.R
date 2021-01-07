@@ -1727,3 +1727,22 @@ sourceGitHub <- function(script = "Cell.cycle.scoring.R"
 #   gsub(x = string, pattern = '/$', replacement = '')
 # }
 #
+
+
+
+#' ww.set.OutDir
+#'
+#' Checks if global variable OutDir is defined. If not,
+#' it returns the current working directory
+#' @export
+#'
+#' @examples ww.set.OutDir()
+
+ww.set.OutDir <- function() {
+  if (exists("OutDir"))   iprint("OutDir not defined !!! Saving in working directory.")
+  if (dir.exists(OutDir)) iprint("OutDir defined, but folder does not exist!!! Saving in working directory.")
+  NewOutDir =
+    if (exists("OutDir")  & dir.exists(OutDir)) { OutDir
+    } else {     paste0(getwd(),"/", collapse = "")}
+  FixPath(NewOutDir)
+}
