@@ -1746,3 +1746,17 @@ ww.set.OutDir <- function() {
     } else {     paste0(getwd(),"/", collapse = "")}
   FixPath(NewOutDir)
 }
+
+
+
+backup <- function(obj) { # make a backup of an object into global env. Scheme: obj > obj.bac
+  varname <- as.character(substitute(obj))
+  bac.varname <- ppp(varname, "bac")
+  if (exists(bac.varname)) {
+    print(" Backup already exists.")
+  } else {
+    iprint(varname, "is backep up into:", bac.varname)
+    assign(x = bac.varname, value = obj, envir= as.environment(1) )
+  }
+}
+# backup(combined.obj)
