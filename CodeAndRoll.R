@@ -78,6 +78,8 @@ stry <- function(...) {try(..., silent = T)} # Silent try
 
 
 ## Generic -------------------------------------------------------------------------------------------------
+'%!in%' <- function(x,y)!('%in%'(x,y))
+
 
 stopif2 <- function(condition, ...) { if (condition) {iprint(...); stop()} } # Stop script if the condition is met. You can parse anything (e.g. variables) in the message
 
@@ -508,6 +510,13 @@ row2named.vector <- function(df_row) { # Convert a dataframe row into a vector, 
   names(vecc) = namez
   return(vecc)
 }
+
+as_tibble_from_named_vec <- function(vec.w.names =  c("a" = 1, "b" = 2), transpose = T) { # Convert a vector with names into a tibble, keeping the names as rownames.
+  stopif(is_null(names(vec.w.names)))
+  tbl <- bind_rows(vec.w.names)
+  if(transpose) t(tbl) else tbl
+}
+# as_tibble_from_named_vec()
 
 
 as.numeric.wNames <- function(vec) { # Converts any vector into a numeric vector, and puts the original character values into the names of the new vector, unless it already has names. Useful for coloring a plot by categories, name-tags, etc.
@@ -1126,7 +1135,7 @@ as.list.df.by.row <- function(dtf, na.omit = TRUE, zero.omit = FALSE, omit.empty
   return(outList)
 }
 
-as.list.df.by.col <- function(dtf, na.omit = TRUE, zero.omit = FALSE, omit.empty = FALSE) { # oSplit a dataframe into a list by its rows. omit.empty for the listelments; na.omit and zero.omit are applied on entries inside each list element.
+as.list.df.by.col <- function(dtf, na.omit = TRUE, zero.omit = FALSE, omit.empty = FALSE) { # Split a dataframe into a list by its rows. omit.empty for the listelments; na.omit and zero.omit are applied on entries inside each list element.
   outList = as.list(dtf)
   if (na.omit) {   outList = lapply(outList, na.omit.strip) }
   if (zero.omit) {   outList = lapply(outList, zero.omit) }
@@ -1760,3 +1769,17 @@ backup <- function(obj) { # make a backup of an object into global env. Scheme: 
   }
 }
 # backup(combined.obj)
+
+
+
+list.dirs.depth.n <- function(dir = '.' , depth = 2) { # list dirs recursive up to a certain level in R https://stackoverflow.com/questions/48297440/list-files-recursive-up-to-a-certain-level-in-r
+  iprint("Scanning directories. Depth:", depth)
+  res <- list.dirs(dir, recursive = FALSE)
+  if (depth > 1) {
+    add <- list.dirs.depth.n(res, depth - 1)
+    c(res, add)
+  } else {
+    res
+  }
+}
+# list.dirs.depth.n(depth = 3)
