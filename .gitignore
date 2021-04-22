@@ -48,3 +48,7 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# Plots accidentally saved
+.pdf
+.png

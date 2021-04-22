@@ -514,7 +514,7 @@ row2named.vector <- function(df_row) { # Convert a dataframe row into a vector, 
 as_tibble_from_named_vec <- function(vec.w.names =  c("a" = 1, "b" = 2), transpose = T) { # Convert a vector with names into a tibble, keeping the names as rownames.
   stopif(is_null(names(vec.w.names)))
   tbl <- bind_rows(vec.w.names)
-  if(transpose) t(tbl) else tbl
+  if (transpose) t(tbl) else tbl
 }
 # as_tibble_from_named_vec()
 
