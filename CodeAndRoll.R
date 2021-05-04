@@ -1783,3 +1783,19 @@ list.dirs.depth.n <- function(dir = '.' , depth = 2) { # list dirs recursive up 
   }
 }
 # list.dirs.depth.n(depth = 3)
+
+
+
+### Copy
+
+# Quick lookup versioin
+HGNC_symbol_search = "http://www.genenames.org/cgi-bin/gene_search?search="
+qHGNC <- function(vector_of_gene_symbols # Parse HGNC links to your list of gene symbols.
+                  , writeOut = FALSE, Open = TRUE) {
+  links = paste0(HGNC_symbol_search, vector_of_gene_symbols)
+  if (writeOut) {
+    bash_commands = paste0("open ", links)
+    write.simple.append("", ManualName = BashScriptLocation)
+    write.simple.append(bash_commands, ManualName = BashScriptLocation)
+  } else if (Open) { browseURL(links) }	else { return(links) }
+}
