@@ -73,9 +73,13 @@ kppu <- function(...) { paste(..., sep = '_',  collapse = '_') } # kollapse by u
 kpps <- function(...) { paste(..., sep = '/', collapse = '/') } # kollapse by (forward) slash
 kppd <- function(...) { paste(..., sep = '-', collapse = '-') } # kollapse by dash
 
+sppp <- function(...) { # Simplified Paste by point
+  string <- paste(..., sep = '.')
+  gsub(pattern = '\\.+', replacement = '\\.', x = string)
+}
+
+
 stry <- function(...) {try(..., silent = T)} # Silent try
-
-
 
 ## Generic -------------------------------------------------------------------------------------------------
 '%!in%' <- function(x,y)!('%in%'(x,y))
