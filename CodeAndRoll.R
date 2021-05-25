@@ -667,6 +667,12 @@ cumsubtract <- function(numericV = blanks) { # Cumulative subtraction, opposite 
 }
 
 
+sumBySameName <- function(namedVec) { # Sum up vector elements with the same name
+  # unlapply(splitbyitsnames(namedVec), sum)
+  tapply(X = namedVec, INDEX = names(namedVec), sum)
+}
+
+
 ### Vector filtering  -------------------------------------------------------------------------------------------------
 
 which_names <- function(named_Vec) { # Return the names where the input vector is TRUE. The input vector is converted to logical.
