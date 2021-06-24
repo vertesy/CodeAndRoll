@@ -708,12 +708,14 @@ zero.omit <- function(vec) { # Omit zero values from a vector.
   return(v2)
 }
 
-pc_TRUE <- function(logical_vector, percentify = TRUE, NumberAndPC = FALSE, NArm = TRUE) { # Percentage of true values in a logical vector, parsed as text (useful for reports.)
+pc_TRUE <- function(logical_vector, percentify = TRUE, NumberAndPC = FALSE, NArm = TRUE, prefix = NULL, suffix = NULL) { # Percentage of true values in a logical vector, parsed as text (useful for reports.)
   SUM = sum(logical_vector, na.rm = NArm)
   LEN = length(logical_vector)
   out = SUM / LEN
   if (percentify) {out = percentage_formatter(out) }
   if (NumberAndPC) { out = paste0(out, " or " , SUM, " of ", LEN) }
+  if (!is.null(prefix)) {out = paste(prefix, out) }
+  if (!is.null(suffix)) {out = paste(out, suffix) }
   return(out)
 }
 
