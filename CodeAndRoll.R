@@ -515,6 +515,17 @@ row2named.vector <- function(df_row) { # Convert a dataframe row into a vector, 
   return(vecc)
 }
 
+tibble_summary_to_named_vec <- function(tbl =  dplyr::tibble('key' = sample(x = 1:5, size = 20, replace = T), 'value' = rnorm(20) )
+                                        ,  idx = c(key =1, value = 2)) { # Convert a key-value tibble into a named vector (as opposed to using rownames).
+  iprint("The following name and value columns are taken:",colnames(tbl[idx]), "; with indices:", idx)
+  tbl_2_col <- tbl[,idx]
+  named.vec <- tbl_2_col[[2]]
+  names(named.vec) <- tbl_2_col[[1]]
+  return(named.vec)
+}
+# tibble_summary_to_named_vec()
+
+
 as_tibble_from_named_vec <- function(vec.w.names =  c("a" = 1, "b" = 2), transpose = T) { # Convert a vector with names into a tibble, keeping the names as rownames.
   stopif(is_null(names(vec.w.names)))
   tbl <- bind_rows(vec.w.names)
