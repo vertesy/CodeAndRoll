@@ -246,12 +246,16 @@ read.simple.table <- function(..., colnames = TRUE, coltypes = NULL) { # Read in
   return(read_in)
 }
 
-FirstCol2RowNames <- function(Tibble, rownamecol = 1, make_names = FALSE) { # Set First Col to Row Names
-  Tibble = as.data.frame(Tibble)
-  NN = Tibble[[rownamecol]]
+FirstCol2RowNames <- function(Tibble, rownamecol = 1, make_names = FALSE, convert.2.df = FALSE ) { # Set First Col to Row Names
+  (NN = Tibble[[rownamecol]])
+  (Tibble <- Tibble[, -rownamecol, drop = F])
+  if (convert.2.df) Tibble = as.data.frame(Tibble) else iprint('Rownames of tibble assigned:', head(NN))
   rownames(Tibble) = if (make_names) make.names(NN, unique = TRUE) else NN
-  return(Tibble[, -rownamecol, drop = F])
+  return(Tibble)
 }
+# xyz <- tibble(v1 = c("a", "a", "b", "b"), v2 = c(3,3,4,4), v3 = c(11,21,31,41)); FirstCol2RowNames(xyz, make_names = T)
+
+
 
 read.simple.tsv <- function(..., sep_ = "\t", colnames = TRUE, wRownames = TRUE, coltypes = NULL, NaReplace = TRUE) { # Read in a file with excel style data: rownames in col1, headers SHIFTED. The header should start with a TAB / First column name should be empty.
   pfn = kollapse(...) # merge path and filename
@@ -491,6 +495,7 @@ bottomN.dfCol <- function(df_Col = as.named.vector(df[ , 1, drop = FALSE]), n = 
 
 
 as.named.vector <- function(df_col, WhichDimNames = 1) { # Convert a dataframe column or row into a vector, keeping the corresponding dimension name.
+  print('2-colDF: tibble::deframe(); It converts the first column to names and second column to values.')
   # use RowNames: WhichDimNames = 1 , 2: use ColNames
   # !!! might require drop = FALSE in subsetting!!! eg: df_col[, 3, drop = FALSE]
   # df_col[which(unlist(lapply(df_col, is.null)))] = "NULL" # replace NULLs - they would fall out of vectors - DOES not work yet
@@ -500,6 +505,10 @@ as.named.vector <- function(df_col, WhichDimNames = 1) { # Convert a dataframe c
   names(vecc) = namez
   return(vecc)
 }
+
+# df2named.vector <- function(df_columns, names=1, data=2) {
+#
+# }
 
 col2named.vector <- function(df_col) { # Convert a dataframe column into a vector, keeping the corresponding dimension name.
   namez = rownames(df_col)
@@ -688,6 +697,12 @@ sumBySameName <- function(namedVec) { # Sum up vector elements with the same nam
 
 which_names <- function(named_Vec) { # Return the names where the input vector is TRUE. The input vector is converted to logical.
   return(names(which(as.logical.wNames(named_Vec)))) }
+
+which_rownames <- function(df_column) { # Return the rownames where the input column is TRUE.
+  stopifnot(length(rownames(df_column)) > 0)
+  idx.T <- which(df_column == TRUE)
+  return(rownames(df_column)[idx.T])
+}
 
 which_names_grep <- function(named_Vec, pattern) { # Return the vector elements whose names are partially matched
   idx = grepv(x = names(named_Vec),pattern = pattern)
