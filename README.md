@@ -26,7 +26,7 @@ source("https://raw.githubusercontent.com/vertesy/CodeAndRoll/master/CodeAndRoll
 
 ### Troubleshooting
 
-*If you encounter a **bug**, or something doesn't work, please let me know by raising an issue on [CodeAndRoll](https://github.com/vertesy/CodeAndRoll/issues)*
+*If you encounter a **bug**, something doesn't work or unclear, please let me know by raising an issue on [CodeAndRoll](https://github.com/vertesy/CodeAndRoll/issues) – Please check if it has been asked.*
 
 
 
