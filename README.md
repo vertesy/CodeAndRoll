@@ -1,16 +1,19 @@
 [![DOI](https://zenodo.org/badge/249404764.svg)](https://zenodo.org/badge/latestdoi/249404764) *If you use these functions, please star the repo, or cite via `DOI`. Thanks!*
 
-# CodeAndRoll
-
-`CodeAndRoll` is a collection of custom R functions. Works with `MarkdownReports`, `SeuratUtils` but also as a standalone set of more than 200 productivity tools.. Many other repos/libraries of mine may have dependency on these functions. Source: own work + web (source referenced in description and/or source code). Intended for my personal use, shared because others may find (parts of it) useful. 
-
-## News
-### CodeAndRoll (v1) repository is decommissioned. 
+# CodeAndRoll (v1) repository is decommissioned. 
 Use the packages below:
 - [CodeAndRoll2](https://github.com/vertesy/CodeAndRoll2)
 - [ReadWriter](https://github.com/vertesy/ReadWriter)
 - [Stringendo](https://github.com/vertesy/Stringendo)
 - [Rocinante](https://github.com/vertesy/Rocinante)
+
+
+# CodeAndRoll
+
+`CodeAndRoll` is a collection of custom R functions. Works with `MarkdownReports`, `SeuratUtils` but also as a standalone set of more than 200 productivity tools.. Many other repos/libraries of mine may have dependency on these functions. Source: own work + web (source referenced in description and/or source code). Intended for my personal use, shared because others may find (parts of it) useful. 
+
+## News
+
 
 <img width="931" alt="Package Reorganisation Diagram" src="https://user-images.githubusercontent.com/5101911/139664920-12b8797e-b161-4e2c-ac88-98754772b609.png">
 
